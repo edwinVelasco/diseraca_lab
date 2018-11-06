@@ -1,0 +1,231 @@
+<form method="post" action="editar_resultado_aguas" id="editar_resultado_aguas" class="form-horizontal">
+<div id="tok"></div>
+<fieldset>
+
+     <div class="control-group text-center">
+         <legend>Editar informe de resultado, Laboratorio de Aguas</legend>
+     </div>
+
+     <div class="control-group">
+        <div class="span3">
+            <div class="controls span3">
+                <input type="text" name="codigo_muestra"  id="codigo_muestra" placeholder="Codigo de la muestra" title="Codigo de la Muestra" required>
+            </div>
+        </div>
+
+        <div class="span3">
+            <div class="controls span3">
+                <input type="text" name="municipio"  id="municipio" placeholder="Municipio" title="Municipio" required>
+            </div>
+        </div>
+
+         <div class="span3">
+            <div class="controls span3">
+                <input type="text" name="lugar"  id="lugar" placeholder="Lugar de la Muestra" title="Lugar de la Muestra" required>
+            </div>
+        </div>
+        <div class="span3">
+            <div class="controls span3">
+                <input type="text" name="tomada"  id="tomada" placeholder="Tomada Por" title="Tomada Por" required>
+            </div>
+        </div>
+    </div>
+
+     <div class="control-group">
+
+         <div class="span2">
+         </div>
+
+         <div class="span3">
+            <div class="controls span2">
+                <input type="text" name="tipo_muestra"  id="tipo_muestra" placeholder="Tipo de Muestra" title="Tipo de Muestra" required>
+            </div>
+         </div>
+
+         <div class="span3">
+            <div class="controls span2">
+                <input type="" name="fecha_muestreo"  id="fecha_muestreo" placeholder="Fecha del Muestreo" title="Fecha del Muestreo" required>
+            </div>
+         </div>
+
+         <div class="span3">
+            <div class="controls span2">
+                <input type="text" name="hora" id="hora" placeholder="Hora del Muestreo" title="Hora del Muestreo" required>
+            </div>
+         </div>
+
+    </div>
+
+    <br/>
+    <div class="control-group" >
+        <div class="span3">
+        </div>
+        <div class="span6">
+            <textarea rows="3" name="nombre_m" id="nombre_m" placeholder="Nombre de la muestra" title="Nombre de la muestra" style="width:70%"></textarea>
+        </div>
+        <div class="span3">
+        </div>
+    </div>
+    <table class="table table-hover table-bordered" id="filed">
+        <thead>
+            <tr>
+                <th>N° Ensayo</th>
+                <th>Descripción del Ensayo</th>
+                <th>Unidad</th>
+                <th>Metodo</th>
+                <th>Resultado</th>
+                <th>Limite Permisible</th>
+            </tr>
+        </thead>
+
+        <tbody id="tbbody">
+
+        </tbody>
+    </table>
+    <br/>
+
+    <div class="control-group" >
+        <div class="span3">
+        </div>
+        <div class="span6">
+            <textarea rows="3" name="observacion" id="observacion" placeholder="Observación, maximo 95 caracteres" title="Observación, maximo 95 caracteres" style="width:70%" maxlength="95"></textarea>
+        </div>
+        <div class="span3">
+        </div>
+    </div>
+
+    <div class="control-group">
+        <div class="controls">
+            <div class="span4"></div>
+            <button type="submit" class="btn btn-success" id="guardar">Guardar</button>
+        </div>
+    </div>
+
+</fieldset>
+</form>
+
+<script>
+    var form;
+
+    jQuery(document).ready(function(){
+        var s = '<input name="id" value="'+orden_editar+'" type="hidden">';
+        $('#tok').html(token+s);
+        form = $('#editar_resultado_aguas');
+        buscar_resultado();
+        get_ensayos_resultados();
+        $("#fecha_muestreo").datepicker({ dateFormat: 'yy-mm-dd' });
+      });
+
+    function buscar_resultado(){
+        $.ajax({
+            type: 'GET',
+            url: 'get_resultado_editar_aguas',
+            data: {'id':orden_editar},
+            success: function (data) {
+                //resultado.codigo, resultado.municipio, resultado.lugar, resultado.tomado_por, resultado.tipo_muestra, resultado.fecha_muestreo, resultado.hora_muestra
+                data = data.split('/');
+                $('#codigo_muestra').val(data[0]);
+                $('#municipio').val(data[1]);
+                $('#lugar').val(data[2]);
+                $('#tomada').val(data[3]);
+                $('#tipo_muestra').val(data[4]);
+                $('#fecha_muestreo').val(data[5]);
+                $('#hora').val(data[6]);
+                $('#nombre_m').val(data[7]);
+                $('#observacion').val(data[8]);
+            },
+            error: function(data) {
+                alert(data);
+            }
+        });
+    }
+
+    function get_ensayos_resultados(){
+        $.ajax({
+            type: 'GET',
+            url: 'get_ensayos_resultado_editar_aguas',
+            data: {'id':orden_editar},
+            success: function (data) {
+
+                for(i=0; i< data.length; i++)
+                {
+                    codigo = '<th>'+'<input class="span12" type="text" name="codigo_'+data[i].pk+'" id="codigo_'+data[i].pk+'"  value="'+data[i].fields.codigo+'" disabled></th>';
+                    descripcion = '<th>'+'<input class="span12" type="text" name="descripcion_'+data[i].pk+'" id="descripcion_'+data[i].pk+'"  value="'+data[i].fields.descripcion+'" disabled></th>';
+                    unidad = '<th>'+'<input class="span12" type="text" name="unidad_'+data[i].pk+'" id="unidad_'+data[i].pk+'"  value="'+data[i].fields.unidad+'"></th>';
+                    metodo = '<th><select  id="metodo_'+data[i].pk+'" name="metodo_'+data[i].pk+'"></select></th>';
+                    resultado = '<th>'+'<input class="span12" type="text" name="resultado_'+data[i].pk+'" id="resultado_'+data[i].pk+'"  value="'+data[i].fields.resultado+'" required>'+'</th>';
+                    limite = '<th><input class="span12" type="text" name="limite_'+data[i].pk+'" id="limite_'+data[i].pk+'"  value="'+data[i].fields.limite+'" required></th>';
+
+                    fila = '<tr>'+codigo+descripcion+unidad+metodo+resultado+limite+'</tr>';
+
+                    $('#tbbody').append(fila);
+
+                    get_metodos_ensayo(data[i].fields.codigo, data[i].pk, data[i].fields.metodo)
+                }
+
+            },
+            error: function(data) {
+                alert(data);
+            }
+        });
+    }
+
+    function get_metodos_ensayo(codigo, pk, m){
+
+        if(codigo==='0439-a' || codigo==='0439-b')
+        {
+            codigo = '0439'
+        }
+        $.ajax({
+            type: 'GET',
+            url: 'get_metodos_ensayo',
+            data: {'codigo':codigo},
+            success: function (data) {
+                metodos = data.split('-');
+                for(i=0; i< metodos.length; i++)
+                {
+                    if(metodos[i]==m)
+                        $('#metodo_'+pk).append("<option value='"+metodos[i]+"' selected>"+metodos[i]+"</option>");
+                    else
+                        $('#metodo_'+pk).append("<option value='"+metodos[i]+"'>"+metodos[i]+"</option>");
+                }
+            },
+            error: function(data) {
+                alert(data);
+            }
+        });
+    }
+
+
+    form.submit(function(){
+        $('#guardar').val('Cargando...');
+        $('#guardar').attr('disabled', 'disabled');
+
+        $.ajax({
+            type: form.attr('method'),
+            url: form.attr('action'),
+            data: form.serialize(),
+            success: function (data) {
+
+                if (data === 'ok')
+                {
+                    UIkit.notify({
+                        message : 'Reporte de resultado Editado con exito.',
+                        status  : 'success',
+                        timeout : 3000,
+                        pos:'top-center'
+                    });
+                    window.location='sesion'
+                }
+
+            },
+            error: function(data) {
+
+            }
+
+        });
+    return false;
+
+    });
+
+</script>

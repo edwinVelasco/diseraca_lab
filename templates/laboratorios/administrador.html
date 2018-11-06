@@ -1,0 +1,136 @@
+{% extends "laboratorios/base.html" %}
+{% load staticfiles %}
+{% block title %} Admin | Silabsa {% endblock %}
+{% block user %} {{ usuario }} {% endblock %}
+
+
+{% block menu %}
+<ul class="sidebar-menu">
+    <li class="has-sub">
+        <a href="javascript:;" class="">
+          <span class="icon-box"> <i class="icon-user"></i></span> Usuarios/Empresas
+          <span class="arrow"></span>
+        </a>
+        <ul class="sub">
+          <li onclick="registro_usuario()"><a class="" href="javascript:;">Registrar Usuario</a></li>
+          <li onclick="listado_user()" ><a class="" href="javascript:;">Usuarios Registrados</a></li>
+          <li onclick="registro_empresa()"><a class="" href="javascript:;">Registrar Empresa</a></li>
+          <!--<li onclick="listado_empresas()"><a class="" href="javascript:;">Empresas Registradas</a></li>
+           <li onclick="upload_img_jefe()"><a class="" href="javascript:;">Firmas</a></li> -->
+        </ul>
+    </li>
+
+    <li class="has-sub">
+    <a href="javascript:;" class="">
+      <span class="icon-box"> <i class="icon-cog"></i></span> Ordenes
+      <span class="arrow"></span>
+    </a>
+    <ul class="sub">
+      <li onclick="registro_orden()"><a class="" href="javascript:;">Orden de Servicio</a></li>
+      <li onclick="buscar_orden()"><a class="" href="javascript:;">Buscar Orden</a></li>
+      <li onclick="ordenes_sin_aprobar()"><a class="" href="javascript:;">Aprobaciónes</a></li>
+      <li onclick="ordenes_sin_imprimir()"><a class="" href="javascript:;">No Impresas</a></li>
+      <li onclick="registro_adelanto()"><a class="" href="javascript:;">Adelanto</a></li>
+      <li onclick="registro_convenio()"><a class="" href="javascript:;">Convenio</a></li>
+    </ul>
+    </li>
+
+    <li class="has-sub">
+    <a href="javascript:;" class="">
+      <span class="icon-box"> <i class="icon-pencil"></i></span> Ensayos
+      <span class="arrow"></span>
+    </a>
+    <ul class="sub">
+      <li onclick="registro_ensayo()"><a class="" href="javascript:;">Registrar Ensayos</a></li>
+      <li onclick="listado_ensayo()"><a class="" href="javascript:;">Ensayos Registrados</a></li>
+    </ul>
+    </li>
+    <li class="has-sub">
+        <a href="javascript:;" class="">
+            <span class="icon-box"> <i class="icon-edit"></i></span> Cotizaciones
+            <span class="arrow"></span>
+        </a>
+        <ul class="sub">
+            <li onclick="cotizacion()"><a class="" href="javascript:;">Generar</a></li>
+        </ul>
+    </li>
+    </ul>
+{% endblock %}
+
+{% block body %}
+<div class="row-fluid">
+   <div class="span12">
+      <h3 class="page-title" id="titulo_vista">
+          Inicio Administrativo
+      </h3>
+   </div>
+</div>
+
+<div class="row-fluid">
+   <div class="span12">
+      <div class="widget box blue" id="form_wizard_1">
+            <div class="widget-title">
+                <span class="tools">
+                    <a href="javascript:;" class="icon-chevron-down"></a>
+                </span>
+            </div>
+
+            <div class="widget-body form" id="formularios">
+
+            </div>
+      </div>
+   </div>
+</div>
+
+{% endblock %}
+
+{% block script %}
+   <script src="{% static 'js/jquery-1.8.3.min.js' %}"></script>
+   <script src="{% static 'assets/bootstrap/js/bootstrap.min.js' %}"></script>
+   <script src="{% static 'js/jquery.blockui.js' %}"></script>
+
+   <script src="{% static 'jquery-ui/jquery-ui.min.js' %}"></script>
+   <script src="{% static 'js/scripts.js' %}"></script>
+   <script src="{% static 'js-diseraca/empresa.js' %}"></script>
+   <script src="{% static 'js-diseraca/cotizacion.js' %}"></script>
+   <script src="{% static 'js-diseraca/ensayo.js' %}"></script>
+   <script src="{% static 'js-diseraca/usuario.js' %}"></script>
+   <script src="{% static 'js-diseraca/password.js' %}"></script>
+   <script src="{% static 'js-diseraca/orden.js' %}"></script>
+   <script src="{% static 'js-diseraca/maquina.js' %}"></script>
+   <script src="{% static 'js-diseraca/imagen.js' %}"></script>
+   <script src="{% static 'uikit/js/uikit.min.js' %}"></script>
+   <script src="{% static 'uikit/js/components/notify.min.js' %}"></script>
+
+   <script>
+       var token = "";
+       var host =  location.host;
+      jQuery(document).ready(function() {
+         // initiate layout and plugins
+         App.init();
+          var ventana = $(window).height();
+         $("#main-content").css("min-height",ventana-115);
+          token = "{% csrf_token %}";
+
+          //setInterval('fecha_hora()',10000);
+      });
+
+       function fecha_hora()
+       {
+           $.ajax({
+            type: 'GET',
+            url: 'fecha_hora',
+            data: '',
+            success: function (data) {
+                time = '<span>'+data+'</span>';
+
+                $('#tiempo').html(time);
+            },
+            error: function(data) {
+                alert(data);
+            }
+        });
+       }
+
+   </script>
+{% endblock %}

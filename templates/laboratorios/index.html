@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>UFPS | Silabsa</title>
+     {% load staticfiles %}
+    <link type="image/x-icon" rel="shortcut icon" href="{% static 'img/favicon.ico' %}">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <meta name="author" content="Edwin A. Velasco, División de servicios academicos">
+    <meta name="description" content="Plataforma de laboratorios, silabsa">
+    <meta name="keywords" content="silabsa ufps laboratorio">
+
+    <link href="{% static 'assets/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet" />
+    <link href="{% static 'assets/bootstrap/css/bootstrap-responsive.min.css' %}" rel="stylesheet" />
+    <link href="{% static 'assets/font-awesome/css/font-awesome.css' %}" rel="stylesheet" />
+    <link href="{% static 'css/style.css' %}" rel="stylesheet" />
+    <link href="{% static 'css/style_responsive.css' %}" rel="stylesheet" />
+    <link href="{% static 'css/style_default.css' %}" rel="stylesheet" />
+    <link href="{% static 'assets/chosen-bootstrap/chosen/chosen.css' %}" rel="stylesheet" />
+    <link href="{% static 'assets/fancybox/source/jquery.fancybox.css' %}" rel="stylesheet" />
+    <link href="{% static 'uikit/css/uikit.min.css' %}" rel="stylesheet" />
+    <link href="{% static 'uikit/css/components/notify.min.css' %}" rel="stylesheet" />
+
+</head>
+<!-- END HEAD -->
+<!-- BEGIN BODY -->
+<body class="fixed-top">
+   <!-- BEGIN HEADER -->
+   <div id="header" class="navbar navbar-inverse navbar-fixed-top">
+       <!-- BEGIN TOP NAVIGATION BAR -->
+       <div class="navbar-inner">
+           <div class="container-fluid">
+              
+               <div class="top-nav">
+                   <ul class="nav pull-right top-menu" >
+                       <!-- BEGIN SUPPORT -->
+
+                       <li class="dropdown" onclick="inicio_sesion()">
+                           <a class="dropdown-toggle" data-placement="bottom" href="javascript:;">
+                               <i class="icon-user"></i>Iniciar Sesión
+                           </a>
+                       </li>
+                       <!-- END SUPPORT -->
+                       <!-- BEGIN USER LOGIN DROPDOWN -->
+                       <li class="dropdown">
+                           <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                               <span class="username">Invitado</span>
+                               <b class="caret"></b>
+                           </a>
+                           <ul class="dropdown-menu">
+                               <li onclick="informacion()"><a href="javascript:;"><i class="icon-tasks"></i> Informacion</a></li>
+                               <li><a target="_blank" href="http://www.ufps.edu.co"><i class="icon-calendar"></i> Ir a Ufps</a></li>
+                                <!--
+                               <li class="divider"></li>
+                               <li onclick="inicio_sesion()"><a href="javascript:;"><i class="icon-user"></i> Iniciar Sesion</a></li>
+
+                               este direcciona al login :D
+                               <li><a href="login.html"><i class="icon-key"></i> Salir</a></li>
+                                -->
+                           </ul>
+                       </li>
+                       <!-- END USER LOGIN DROPDOWN -->
+                   </ul>
+                   <!-- END TOP NAVIGATION MENU -->
+               </div>
+           </div>
+       </div>
+       <!-- END TOP NAVIGATION BAR -->
+   </div>
+   <!-- END HEADER -->
+   <!-- BEGIN CONTAINER -->
+   <div id="container" class="row-fluid">
+      <!-- BEGIN SIDEBAR -->
+      <div id="sidebar" class="nav-collapse collapse">
+          <ul class="sidebar-menu">
+              <li class="has-sub">
+                  <a target="_blank" href="http://www.ufps.edu.co/ufps/cread/Presentacion.php" class="">
+                      <span class="icon-box"> <i class="icon-share"></i></span> Conocenos
+                  </a>
+              </li>
+              <li class="has-sub" onclick="informacion()">
+                  <a href="javascript:;" class="">
+                      <span class="icon-box"> <i class="icon-info-sign"></i></span> Informacion
+                  </a>
+              </li>
+              <!--
+              <li class="has-sub">
+                  <a href="javascript:;" class="">
+                      <span class="icon-box"> <i class="icon-unlock"></i></span> Sanciones
+                  </a>
+              </li>
+              <li class="has-sub">
+                  <a href="javascript:;" class="">
+                      <span class="icon-box"> <i class="icon-folder-open"></i></span> Disponibilidad
+                  </a>
+
+              </li>
+                       -->
+
+          </ul>
+         <!-- END SIDEBAR MENU -->
+      </div>
+      <!-- END SIDEBAR -->
+      <!-- BEGIN PAGE -->  
+      <div id="main-content" style="min-height: 454px;">
+         <!-- BEGIN PAGE CONTAINER-->
+         <div class="container-fluid" >
+            <!-- BEGIN PAGE HEADER-->   
+            <div class="row-fluid">
+               <div class="span12" id="formularios">
+
+               </div>
+             </div>
+         </div>
+            <!-- END PAGE CONTENT-->
+      </div>
+         <!-- END PAGE CONTAINER-->
+   </div>
+      <!-- END PAGE -->
+</div>
+   <!-- END CONTAINER -->
+
+   <!-- BEGIN FOOTER -->
+
+   <div id="footer">
+        <!--
+       <div>
+            <a href="http://www.mineducacion.gov.co" target="_blank" onmouseover="document.link_2.src = 'http://www.ufps.edu.co/ufpsnuevo/img/links/Lh-02.png';" onmouseout="document.link_2.src = 'http://www.ufps.edu.co/ufpsnuevo/img/links/L-02.png';"><img src="http://www.ufps.edu.co/ufpsnuevo/img/links/L-02.png" name="link_2" id="link_2"></a>
+            <a href="http://www.gobiernoenlinea.gov.co" target="_blank" onmouseover="document.link_3.src = 'http://www.ufps.edu.co/ufpsnuevo/img/links/Lh-03.png';" onmouseout="document.link_3.src = 'http://www.ufps.edu.co/ufpsnuevo/img/links/L-03.png';"><img src="http://www.ufps.edu.co/ufpsnuevo/img/links/L-03.png" name="link_3" id="link_3"></a>
+            <a href="http://www.renata.edu.co" target="_blank" onmouseover="document.link_4.src = 'http://www.ufps.edu.co/ufps/images/footer/Lh-04.png';" onmouseout="document.link_4.src = 'http://www.ufps.edu.co/ufpsnuevo/img/links/L-04.png';"><img src="http://www.ufps.edu.co/ufpsnuevo/img/links/L-04.png" name="link_4" id="link_4"></a>
+            <a href="http://www.icfes.gov.co/" target="_blank" onmouseover="document.link_5.src = 'http://www.ufps.edu.co/ufpsnuevo/img/links/Lh-05.png';" onmouseout="document.link_5.src = 'http://www.ufps.edu.co/ufpsnuevo/img/links/L-05.png';"><img src="http://www.ufps.edu.co/ufpsnuevo/img/links/L-05.png" name="link_5" id="link_5"></a>
+            <a href="http://www.icetex.gov.co" target="_blank" onmouseover="document.link_6.src = 'http://www.ufps.edu.co/ufpsnuevo/img/links/Lh-06.png';" onmouseout="document.link_6.src = 'http://www.ufps.edu.co/ufpsnuevo/img/links/L-06.png';"><img src="http://www.ufps.edu.co/ufpsnuevo/img/links/L-06.png" name="link_6" id="link_6"></a>
+            <a href="http://www.universia.net.co/" target="_blank" onmouseover="document.link_7.src = 'http://www.ufps.edu.co/ufpsnuevo/img/links/Lh-07.png';" onmouseout="document.link_7.src = 'http://www.ufps.edu.co/ufpsnuevo/img/links/L-07.png';"><img src="http://www.ufps.edu.co/ufpsnuevo/img/links/L-07.png" name="link_7" id="link_7"></a>
+            <a href="http://www.colombiaaprende.edu.co" target="_blank" onmouseover="document.link_8.src = 'http://www.ufps.edu.co/ufpsnuevo/img/links/Lh-08.png';" onmouseout="document.link_8.src = 'http://www.ufps.edu.co/ufpsnuevo/img/links/L-08.png';"><img src="http://www.ufps.edu.co/ufpsnuevo/img/links/L-08.png" name="link_8" id="link_8"></a>
+            <a href="http://www.dane.gov.co" target="_blank" onmouseover="document.link_9.src = 'http://www.ufps.edu.co/ufpsnuevo/img/links/Lh-09.png';" onmouseout="document.link_9.src = 'http://www.ufps.edu.co/ufpsnuevo/img/links/L-09.png';"><img src="http://www.ufps.edu.co/ufpsnuevo/img/links/L-09.png" name="link_9" id="link_9"></a>
+            <a href="http://www.ufpso.edu.co" target="_blank" onmouseover="document.link_10.src = 'http://www.ufps.edu.co/ufpsnuevo/img/links/Lh-10.png';" onmouseout="document.link_10.src = 'http://www.ufps.edu.co/ufpsnuevo/img/links/L-10.png';"><img src="http://www.ufps.edu.co/ufpsnuevo/img/links/L-10.png" name="link_10" id="link_10"></a>
+            <a href="http://www.colombiaespasion.com/" target="_blank" onmouseover="document.link_11.src = 'http://www.ufps.edu.co/ufpsnuevo/img/links/Lh-11.png';" onmouseout="document.link_11.src = 'http://www.ufps.edu.co/ufpsnuevo/img/links/L-11.png';"><img src="http://www.ufps.edu.co/ufpsnuevo/img/links/L-11.png" name="link_11" id="link_11"></a>
+        </div>
+        -->
+       Institución de Educación Superior sujeta a inspección y vigilancia por el Ministerio de Educación Nacional<br>
+       Avenida Gran Colombia No. 12E-96 Barrio Colsag, San José de Cúcuta - Colombia. Teléfono (057)(7) 5776655<br>
+       Copyright © Todos los derechos reservados Edwin A Velasco <br>
+       Contacto: edwinalbertovelasco@ufps.edu.co
+      <div class="span pull-right">
+         <span class="go-top"><i class="icon-arrow-up"></i></span>
+      </div>
+   </div>
+
+   <script src="{% static 'js/jquery-1.8.3.min.js'%}"></script>
+   <script src="{% static 'assets/bootstrap/js/bootstrap.min.js'%}"></script>
+   <script src="{% static 'js/jquery.blockui.js'%}"></script>
+   <script src="{% static 'uikit/js/uikit.min.js'%}"></script>
+   <script src="{% static 'uikit/js/components/notify.min.js'%}"></script>
+
+   <script src="{% static 'js-diseraca/index.js'%}"></script>
+   <script src="{% static 'js/scripts.js'%}"></script>
+
+
+    <!--  <script type="text/javascript" src="http://localhost:8008/socket.io/socket.io.js"></script>
+    <script LANGUAGE="JavaScript" SRC="http://www.searchnc.com/cgi-bin/myip.pl"></script> -->
+    <script>
+       
+
+       //var socket = io.connect("http://localhost:8008");
+       var token = "";
+
+    jQuery(document).ready(function()
+    {
+    // initiate layout and plugins
+        App.init();
+          var ventana = $(window).height();
+         $("#main-content").css("min-height",ventana-153);
+
+          token = "{% csrf_token %}";
+          inicio_sesion();
+
+          UIkit.notify({
+              message : 'Bienvenido a Silabsa',
+              status  : 'info',
+              timeout : 3000,
+              pos:'top-center'
+          });
+      });
+
+        function inicio_sesion()
+        {
+            $("#formularios").load( "{% static 'html/index/inicio_sesion.html' %}");
+        }
+
+       function informacion()
+       {
+           $("#formularios").load( "{% static 'html/index/informacion.html'%}");
+       }
+
+   </script>
+   <!-- END JAVASCRIPTS -->   
+</body>
+<!-- END BODY -->
+</html>

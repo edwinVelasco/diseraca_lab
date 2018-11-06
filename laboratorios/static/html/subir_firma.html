@@ -1,0 +1,105 @@
+
+<form method="post" action="add_firma" id="add_firma" class="form-horizontal">
+<div id="tok">
+
+</div>
+<fieldset>
+    <div class="control-group">
+        <legend>Firma Jefe o Encargado</legend>
+    </div>
+
+    <div class="control-group">
+        <label for="id_usuario" class="control-label">
+            Usuario
+        </label>
+
+        <div class="controls">
+            <select  id="id_usuario" name="usuario">
+            </select>
+        </div>
+    </div>
+
+    <div class="control-group">
+        <label for="id_image" class="control-label">Imagen</label>
+        <div class="controls">
+            <input id="id_image" name="image" type="file" required/>
+        </div>
+    </div>
+
+    <div class="control-group">
+        <div class="controls">
+            <button type="submit" class="btn btn-success">Guardar</button>
+        </div>
+    </div>
+
+</fieldset>
+</form>
+
+<script>
+
+    var frm;
+    jQuery(document).ready(function() {
+        //console.log(token+' registro');
+        $('#tok').html(token);
+        frm = $('#add_firma');
+        usuario_para_firma();
+      });
+
+    frm.submit(function (event)
+    {
+        event.preventDefault();
+        fileSelect = $('#id_image');
+
+        files = fileSelect.files;
+        formData = new FormData();
+        file = files[0];
+
+
+        formData.append('image', file, file.name);
+        xhr = new XMLHttpRequest();
+        xhr.open(frm.attr('method'), frm.attr('action'), true);
+        xhr.send(formData);
+        xhr.onload = function () {
+            if (xhr.status === 200)
+                console.log('upload');
+            else
+                alert('An error occurred!');
+        };
+
+    });
+/*
+$.ajax({
+            type: frm.attr('method'),
+            url: frm.attr('action'),
+            enctype: 'multipart/form-data',
+            data: {'usuario':$('#id_usuario').val()},
+            files: {'':},
+            success: function (data) {
+                alert(data);
+            },
+            error: function(data) {
+                console.log(data);
+            }
+        });
+        return false;
+ */
+
+    function usuario_para_firma(){
+        $.ajax({
+            type: 'GET',
+            url: 'get_user_firma',
+            success: function (data) {
+                $('#id_usuario').append("<option value='0'>Seleccione..</option>");
+                for(var i=0; i<data.length; i++)
+                {
+                    $('#id_usuario').append("<option value='"+data[i].pk+"'>"+data[i].fields.codigo+'-'+data[i].fields.nombre+"</option>");
+                }
+            },
+            error: function(data) {
+                console.log(data);
+            }
+        });
+        return false;
+    }
+
+</script>

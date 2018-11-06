@@ -1,0 +1,650 @@
+<form method="post" action="add_compresion_concreto" id="add_compresion_concreto" class="form-horizontal">
+<div id="tok"></div>
+<fieldset>
+
+     <div class="control-group text-center">
+         <legend>Ensayo a Compresión de Concreto</legend>
+     </div>
+
+     <div class="control-group">
+        <div class="span4">
+
+            <label for="elemento" class="control-label span3">Elemento</label>
+            <div class="controls span3">
+                <input type="text" name="elemento"  id="elemento">
+            </div>
+
+        </div>
+
+        <div class="span3">
+            <label for="numero" class="control-label span5">No. de Ensayos</label>
+            <div class="controls span4">
+                <select  id="numero" name="numero" class="span10" onchange="acomodar_formulario()">
+
+                </select>
+            </div>
+        </div>
+
+        <div class="span4">
+            <label for="obra" class="control-label span2">Obra:</label>
+            <div class="controls span8">
+                <textarea name="obra" id="obra" style="width: 242px; height: 55px;"></textarea>
+            </div>
+        </div>
+    </div>
+     <br/>
+
+    <div class="container">
+        <div class="control-group" id="muestra_1">
+
+            <div class="controls controls-row">
+                <label class="control-label">Escala Tn</label>
+                <div class="controls">
+                    <select  id="maquina" name="maquina" class="span3" >
+                        <option value="0">Maquinas</option>
+                    </select>
+
+                    <select  id="escala" name="escala" class="span3">
+                    </select>
+                </div>
+            </div>
+            <br/>
+
+            <div class="controls controls-row">
+
+                <label class="control-label"></label>
+                <div class="controls">
+                    <label id="m_1" class="span2">Muestra 1</label>
+                    <label id="m_2" class="span2" style="display: none;" >Muestra 2</label>
+                    <label id="m_3" class="span2" style="display: none;" >Muestra 3</label>
+                </div>
+
+            </div>
+            <br/>
+
+            <div class="controls controls-row">
+                <label for="diametro_1" class="control-label">Diametro en Pulgadas</label>
+
+                <div class="controls">
+                    <input type="text" name="diametro_1"  id="diametro_1" onkeyup="areacm(this)" class="span2">
+                    <input type="text" name="diametro_2"  style="display: none;" id="diametro_2" onkeyup="areacm(this)" class="span2">
+                    <input type="text" name="diametro_3"  id="diametro_3"  style="display: none;" onkeyup="areacm(this)" class="span2">
+                </div>
+
+            </div>
+            <br/>
+
+            <div class="controls controls-row">
+                <label for="altura_1" class="control-label">Altura en Pulgadas</label>
+
+                <div class="controls">
+                    <input type="text" name="altura_1"  id="altura_1" onkeyup="volumen(this)" class="span2">
+                    <input type="text" name="altura_2" style="display: none;" id="altura_2" onkeyup="volumen(this)" class="span2">
+                    <input type="text" name="altura_3" style="display: none;" id="altura_3" onkeyup="volumen(this)" class="span2">
+                </div>
+            </div>
+            <br/>
+
+            <div class="controls controls-row">
+                <label for="area_cm_1" class="control-label">Area cm&sup2;</label>
+                <div class="controls">
+                    <input type="text" name="area_cm_1"  id="area_cm_1" class="span2" disabled>
+                    <input type="text" name="area_cm_2" style="display: none;" id="area_cm_2" class="span2" disabled>
+                    <input type="text" name="area_cm_3" style="display: none;" id="area_cm_3" class="span2" disabled>
+                </div>
+            </div>
+            <br/>
+
+            <div class="controls controls-row">
+                <label for="volumen_cm_1" class="control-label">Volumen en cm&sup3;</label>
+                <div class="controls">
+                    <input type="text" name="volumen_cm_1"  id="volumen_cm_1" class="span2" disabled>
+                    <input type="text" name="volumen_cm_2" style="display: none;" id="volumen_cm_2" class="span2" disabled >
+                    <input type="text" name="volumen_cm_3" style="display: none;" id="volumen_cm_3" class="span2" disabled>
+                </div>
+            </div>
+            <br/>
+
+            <div class="controls controls-row">
+                <label for="fecha_recepcion_1" class="control-label">Fecha Recepción</label>
+                <div class="controls">
+                    <input type="text" name="fecha_recepcion_1"  id="fecha_recepcion_1" class="span2">
+                    <input type="text" name="fecha_recepcion_2" style="display: none;" id="fecha_recepcion_2" class="span2">
+                    <input type="text" name="fecha_recepcion_3" style="display: none;" id="fecha_recepcion_3" class="span2">
+                </div>
+            </div>
+            <br/>
+
+            <div class="controls controls-row">
+                <label for="asentamiento_1" class="control-label">Asentamiento</label>
+                <div class="controls">
+                    <input type="text" name="asentamiento_1"  id="asentamiento_1" class="span2">
+                    <input type="text" name="asentamiento_2" style="display: none;" id="asentamiento_2" class="span2">
+                    <input type="text" name="asentamiento_3" style="display: none;" id="asentamiento_3" class="span2">
+                </div>
+            </div>
+            <br/>
+
+            <div class="controls controls-row">
+                <label for="tipo_concreto_1" class="control-label">Tipo Concreto</label>
+                <div class="controls">
+                    <input type="text" name="tipo_concreto_1"  id="tipo_concreto_1" class="span2">
+                    <input type="text" name="tipo_concreto_2" style="display: none;" id="tipo_concreto_2" class="span2">
+                    <input type="text" name="tipo_concreto_3" style="display: none;" id="tipo_concreto_3" class="span2">
+                </div>
+            </div>
+            <br/>
+
+            <div class="controls controls-row">
+                <label for="proyeccion_1" class="control-label">Proyección a 28 dias en Psi</label>
+                <div class="controls">
+                    <input type="text" name="proyeccion_1"  id="proyeccion_1" class="span2">
+                    <input type="text" name="proyeccion_2" style="display: none;" id="proyeccion_2" class="span2">
+                    <input type="text" name="proyeccion_3" style="display: none;" id="proyeccion_3" class="span2">
+                </div>
+            </div>
+            <br/>
+
+            <div class="controls controls-row">
+                <label for="numero_1" class="control-label">Número de Muestra</label>
+                <div class="controls">
+                    <input type="text" name="numero_1"  id="numero_1" class="span2">
+                    <input type="text" name="numero_2" style="display: none;" id="numero_2" class="span2">
+                    <input type="text" name="numero_3" style="display: none;" id="numero_3" class="span2">
+                </div>
+            </div>
+            <br/>
+
+            <div class="controls controls-row">
+                <label for="fecha_elaboracion_1" class="control-label">Fecha Elaboración</label>
+                <div class="controls">
+                    <input type="text" name="fecha_elaboracion_1"  id="fecha_elaboracion_1" class="span2">
+                    <input type="text" name="fecha_elaboracion_2" style="display: none;" id="fecha_elaboracion_2" class="span2">
+                    <input type="text" name="fecha_elaboracion_3" style="display: none;" id="fecha_elaboracion_3" class="span2">
+                </div>
+            </div>
+            <br/>
+
+            <div class="controls controls-row">
+                <label for="fecha_elaboracion_1" class="control-label">Fecha del Ensayo</label>
+                <div class="controls">
+                    <input type="text" name="fecha_ensayo_1"  id="fecha_ensayo_1" class="span2" onchange="edad_dias(this)">
+                    <input type="text" name="fecha_ensayo_2" style="display: none;" id="fecha_ensayo_2" class="span2" onchange="edad_dias(this)">
+                    <input type="text" name="fecha_ensayo_3" style="display: none;" id="fecha_ensayo_3" class="span2" onchange="edad_dias(this)">
+                </div>
+            </div>
+            <br/>
+
+            <div class="controls controls-row">
+                <label for="peso_1" class="control-label">Peso de la Muestra en kg</label>
+                <div class="controls">
+                    <input type="text" name="peso_1"  id="peso_1" class="span2" onchange="peso_unitario(this)">
+                    <input type="text" name="peso_2" style="display: none;" id="peso_2" class="span2" onchange="peso_unitario(this)">
+                    <input type="text" name="peso_3" style="display: none;" id="peso_3" class="span2" onchange="peso_unitario(this)">
+                </div>
+            </div>
+            <br/>
+
+            <div class="controls controls-row">
+                <label for="carga_maxima_1" class="control-label">Carga Máxima en KGF</label>
+                <div class="controls">
+                    <input type="text" name="carga_maxima_1"  id="carga_maxima_1" class="span2" onchange="carga_maxima_calibacion_kg(this)">
+                    <input type="text" name="carga_maxima_2" style="display: none;" id="carga_maxima_2" class="span2" onchange="carga_maxima_calibacion_kg(this)">
+                    <input type="text" name="carga_maxima_3" style="display: none;" id="carga_maxima_3" class="span2" onchange="carga_maxima_calibacion_kg(this)">
+                </div>
+            </div>
+            <br/>
+
+            <div class="controls controls-row">
+                <div class="span3"></div>
+                <div class="span4">
+                    <label class="control-label">Detalle de Resultados</label>
+                </div>
+
+            </div>
+            <br/>
+            <br/>
+
+
+            <div class="controls controls-row">
+                <label for="edad_1" class="control-label">Edad en Dias</label>
+                <div class="controls">
+                    <input type="text" name="edad_1"  id="edad_1" class="span2" disabled>
+                    <input type="text" name="edad_2" style="display: none;" id="edad_2" class="span2" disabled>
+                    <input type="text" name="edad_3" style="display: none;" id="edad_3" class="span2" disabled>
+                </div>
+            </div>
+            <br/>
+
+            <div class="controls controls-row">
+                <label for="peso_unitario_1" class="control-label">Peso Unitario kg/mtr&sup3;</label>
+                <div class="controls">
+                    <input type="text" name="peso_unitario_1"  id="peso_unitario_1" class="span2" disabled>
+                    <input type="text" name="peso_unitario_2" style="display: none;" id="peso_unitario_2" class="span2" disabled>
+                    <input type="text" name="peso_unitario_3" style="display: none;" id="peso_unitario_3" class="span2" disabled>
+                </div>
+            </div>
+            <br/>
+
+            <div class="controls controls-row">
+                <label for="carga_max_corregida_1" class="control-label">Carga Maxima Corregida por Calibración kg</label>
+                <div class="controls">
+                    <input type="text" name="carga_max_corregida_1"  id="carga_max_corregida_1" class="span2" disabled>
+                    <input type="text" name="carga_max_corregida_2" style="display: none;" id="carga_max_corregida_2" class="span2" disabled>
+                    <input type="text" name="carga_max_corregida_3" style="display: none;" id="carga_max_corregida_3" class="span2" disabled>
+                </div>
+            </div>
+            <br/>
+
+            <div class="controls controls-row">
+                <label for="resistencia_mpa_1" class="control-label">Resistencia a Compresión MPA</label>
+                <div class="controls">
+                    <input type="text" name="resistencia_mpa_1"  id="resistencia_mpa_1" class="span2" disabled>
+                    <input type="text" name="resistencia_mpa_2" style="display: none;" id="resistencia_mpa_2" class="span2" disabled>
+                    <input type="text" name="resistencia_mpa_3" style="display: none;" id="resistencia_mpa_3" class="span2" disabled>
+                </div>
+            </div>
+            <br/>
+
+            <div class="controls controls-row">
+                <label for="resistencia_kgf_1" class="control-label">Resistencia a Compresión KGF</label>
+                <div class="controls">
+                    <input type="text" name="resistencia_kgf_1"  id="resistencia_kgf_1" class="span2" disabled>
+                    <input type="text" style="display: none;" name="resistencia_kgf_2"  id="resistencia_kgf_2" class="span2" disabled>
+                    <input type="text" name="resistencia_kgf_3" style="display: none;" id="resistencia_kgf_3" class="span2" disabled>
+                </div>
+            </div>
+            <br/>
+
+            <div class="controls controls-row">
+                <label for="resistencia_psi_1" class="control-label">Resistencia a Compresión PSI</label>
+                <div class="controls">
+                    <input type="text" name="resistencia_psi_1"  id="resistencia_psi_1" class="span2" disabled>
+                    <input type="text" name="resistencia_psi_2" style="display: none;" id="resistencia_psi_2" class="span2" disabled>
+                    <input type="text" name="resistencia_psi_3" style="display: none;" id="resistencia_psi_3" class="span2" disabled>
+                </div>
+            </div>
+            <br/>
+
+            <div class="controls controls-row">
+                <label for="porcentaje_1" class="control-label"><b>% Resistencia a la Compresión</b></label>
+                <div class="controls">
+                    <input type="text" name="porcentaje_1"  id="porcentaje_1" class="span2" disabled>
+                    <input type="text" name="porcentaje_2" style="display: none;" id="porcentaje_2" class="span2" disabled>
+                    <input type="text" name="porcentaje_3" style="display: none;" id="porcentaje_3" class="span2" disabled>
+                </div>
+            </div>
+            <br/>
+
+            <div class="controls controls-row">
+                <div class="span1"></div>
+                <div class="span5">
+                    <textarea name="observacion" id="observacion" style="width: 420px; height: 58px;">1. Las muestras y la información son suministradas por:  el cliente</textarea>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+    <br/>
+
+    <div class="control-group">
+        <div class="controls">
+            <div class="span3"></div>
+            <button type="submit" class="btn btn-success">Guardar</button>
+        </div>
+    </div>
+
+</fieldset>
+</form>
+
+<script>
+    var maquina;
+    var escala;
+    var correccion;
+    var factor2;
+    var numero=1;
+    var frm;
+
+
+     jQuery(document).ready(function() {
+
+        var s = '<input name="id" value="' +orden_editar+'" type="hidden">';
+        $('#tok').html(token+s);
+        get_maquinas_compresion_concreto();
+        inicializar_fechas();
+        maquina = $('#maquina');
+        escala = $('#escala');
+        get_datos_ensayo();
+         frm = $('#add_compresion_concreto');
+
+      });
+
+    function acomodar_formulario(){
+
+        x = $('#numero').val()*1;
+        if (x==2 && numero ==1)
+            activar_columnas('2');
+        else if(x==3 && numero ==1){
+            activar_columnas('2');
+            activar_columnas('3');
+        }
+        else if(x==3 && numero ==2)
+            activar_columnas('3');
+        else if(x==1 && numero==3){
+            desactivar_columna('2');
+            desactivar_columna('3');
+        }
+        else if(x==2 && numero==3)
+            desactivar_columna('3');
+        else
+            desactivar_columna('2');
+
+        numero = x;
+    }
+
+    function get_datos_ensayo(){
+        $.ajax({
+            type: 'GET',
+            url: 'get_datos_orden_ensayo',
+            data: {'id':orden_editar},
+            success: function (data){
+                data = data * 1;
+
+                for (i=1; i<= data; i++){
+                    opcion ='<option value="'+i+'">'+i+'</option>';
+                    $('#numero').append(opcion);
+                }
+            },
+            error: function(data) {
+             console.log(data);
+            }
+        });
+    }
+
+    function activar_columnas(numero){
+        $('#m_'+numero).removeAttr('style');
+        $('#diametro_'+numero).removeAttr('style');
+        $('#altura_'+numero).removeAttr('style');
+        $('#diametro_'+numero).removeAttr('style');
+        $('#area_cm_'+numero).removeAttr('style');
+        $('#volumen_cm_'+numero).removeAttr('style');
+        $('#fecha_recepcion_'+numero).removeAttr('style');
+        $('#asentamiento_'+numero).removeAttr('style');
+        $('#tipo_concreto_'+numero).removeAttr('style');
+        $('#proyeccion_'+numero).removeAttr('style');
+        $('#numero_'+numero).removeAttr('style');
+        $('#fecha_elaboracion_'+numero).removeAttr('style');
+        $('#fecha_ensayo_'+numero).removeAttr('style');
+        $('#peso_'+numero).removeAttr('style');
+        $('#carga_maxima_'+numero).removeAttr('style');
+        $('#edad_'+numero).removeAttr('style');
+        $('#peso_unitario_'+numero).removeAttr('style');
+        $('#carga_max_corregida_'+numero).removeAttr('style');
+        $('#resistencia_mpa_'+numero).removeAttr('style');
+        $('#resistencia_kgf_'+numero).removeAttr('style');
+        $('#resistencia_psi_'+numero).removeAttr('style');
+        $('#porcentaje_'+numero).removeAttr('style');
+    }
+
+    function desactivar_columna(numero){
+        $('#m_'+numero).hide();
+        $('#diametro_'+numero).hide();
+        $('#altura_'+numero).hide();
+        $('#area_cm_'+numero).hide();
+        $('#volumen_cm_'+numero).hide();
+        $('#fecha_recepcion_'+numero).hide();
+        $('#asentamiento_'+numero).hide();
+        $('#tipo_concreto_'+numero).hide();
+        $('#proyeccion_'+numero).hide();
+        $('#numero_'+numero).hide();
+        $('#fecha_ensayo_'+numero).hide();
+        $('#peso_'+numero).hide();
+        $('#carga_maxima_'+numero).hide();
+        $('#fecha_elaboracion_'+numero).hide();
+        $('#edad_'+numero).hide();
+        $('#peso_unitario_'+numero).hide();
+        $('#carga_max_corregida_'+numero).hide();
+        $('#resistencia_mpa_'+numero).hide();
+        $('#resistencia_kgf_'+numero).hide();
+        $('#resistencia_psi_'+numero).hide();
+        $('#porcentaje_'+numero).hide();
+    }
+
+    function inicializar_fechas(){
+        $("#fecha_recepcion_1").datepicker();
+         $("#fecha_recepcion_2").datepicker();
+         $("#fecha_recepcion_3").datepicker();
+
+         $("#fecha_elaboracion_1").datepicker();
+         $("#fecha_elaboracion_2").datepicker();
+         $("#fecha_elaboracion_3").datepicker();
+
+
+         $("#fecha_ensayo_1").datepicker();
+         $("#fecha_ensayo_2").datepicker();
+         $("#fecha_ensayo_3").datepicker();
+    }
+
+    function get_maquinas_compresion_concreto(){
+        $.ajax({
+        type: 'GET',
+        url: 'get_maquinas',
+        data: '',
+        success: function (data){
+            if(data.length == 0)
+            {
+                UIkit.notify({
+                    message : 'No Hay Maquinas Registradas',
+                    status  : 'danger',
+                    timeout : 3000,
+                    pos:'top-center'
+                    });
+                return;
+            }
+             for(i=0; i< data.length; i++)
+                {
+
+                    opcion ='<option value="'+data[i].pk+'">'+data[i].fields.nombre+'</option>'
+
+                    $('#maquina').append(opcion);
+                }
+        },
+        error: function(data) {
+            alert(data);
+        }
+    });
+    }
+
+    maquina.change(function (){
+
+        $('#escala').html('');
+        m = $('#maquina').val();
+        if (m==0 || m=='0')
+        {
+            return;
+        }
+
+        $.ajax({
+        type: 'GET',
+        url: 'get_escalas',
+        data: {'id':m},
+        success: function (data){
+
+            if(data.length == 0)
+            {
+                UIkit.notify({
+                    message : 'No Hay Escalas Registradas',
+                    status  : 'danger',
+                    timeout : 3000,
+                    pos:'top-center'
+                    });
+                return;
+            }
+            opcion = '<option value="0">Escalas</option>';
+            $('#escala').append(opcion);
+            for(i=0; i< data.length; i++)
+            {
+                opcion ='<option value="'+data[i].pk+'">'+data[i].fields.escala+'</option>';
+                $('#escala').append(opcion);
+            }
+        },
+        error: function(data) {
+            console.log(data);
+        }
+    });
+    });
+
+    escala.change(function (){
+        e = $('#escala').val();
+        if (e==0 || e=='0')
+        {
+            return;
+        }
+        $.ajax({
+            type: 'GET',
+            url: 'get_escalatn',
+            data: {'id':e},
+            success: function (data){
+                asignacion_escala(data);
+            },
+            error: function(data) {
+             console.log(data);
+            }
+        });
+    });
+
+    function asignacion_escala(data){
+        salida = data.split(',');
+        correccion = salida[2]*1;
+        factor2 = salida[3]*1;
+        console.log(correccion+'  dd '+factor2);
+    }
+
+    function areacm(etiqueta){
+        valor = $(etiqueta).val()*1;
+        id = $(etiqueta).attr('id');
+        ss = id.split('_');
+        salida = valor*valor*3.14156/4*6.4516;
+        $('#area_cm_'+ss[1]).val(salida.toFixed(2));
+    }
+
+    function volumen(etiqueta){
+
+        altura = $(etiqueta).val()*1;
+        id = $(etiqueta).attr('id');
+        ss = id.split('_');
+        area = $('#area_cm_'+ss[1]).val();
+        salida = altura*area*2.54;
+
+        $('#volumen_cm_'+ss[1]).val(salida.toFixed(2));
+    }
+
+    function edad_dias(etiqueta){
+        id = $(etiqueta).attr('id');
+        ss = id.split('_');
+        elaboracion = new Date($('#fecha_elaboracion_'+ss[2]).val());
+        ensayo = new Date($(etiqueta).val());
+        edad = ensayo - elaboracion;
+        $('#edad_'+ss[2]).val(edad/1000/60/60/24);
+    }
+
+    function peso_unitario(etiqueta){
+        id = $(etiqueta).attr('id');
+        ss = id.split('_');
+        v = $('#volumen_cm_'+ss[1]).val()*1;
+        peso = $('#peso_'+ss[1]).val()*1;
+        total = peso/(v/1000000);
+
+        $('#peso_unitario_'+ss[1]).val(total.toFixed(2));
+    }
+
+    function carga_maxima_calibacion_kg(etiqueta){
+        id = $(etiqueta).attr('id');
+        ss = id.split('_');// --> 2
+        carg_max = $(etiqueta).val()*1;
+        resultado = factor2 + (correccion * carg_max);
+        $('#carga_max_corregida_'+ss[2]).val(resultado.toFixed(2));
+
+        area = $('#area_cm_'+ss[2]).val()*1;
+
+        resistencia_kgf = resultado.toFixed(2)/area;
+        $('#resistencia_kgf_'+ss[2]).val(resistencia_kgf.toFixed(2));
+
+        resistencia_mpa = resistencia_kgf * 0.101972;
+        $('#resistencia_mpa_'+ss[2]).val(resistencia_mpa.toFixed(2));
+
+        resistencia_psi = resistencia_kgf * 14.22;
+        $('#resistencia_psi_'+ss[2]).val(resistencia_psi.toFixed(2));
+
+        proyeccion = $('#proyeccion_'+ss[2]).val()*1;
+
+        porcentaje_resistencia = resistencia_psi.toFixed(2) / proyeccion * 100;
+        $('#porcentaje_'+ss[2]).val(porcentaje_resistencia.toFixed(2));
+    }
+
+
+    frm.submit(function () {
+        x = $('#numero').val()*1;
+        for(i=1; i<= x;i++)
+        {
+            $('#area_cm_'+i).removeAttr('disabled');
+            $('#volumen_cm_'+i).removeAttr('disabled');
+            $('#edad_'+i).removeAttr('disabled');
+            $('#peso_unitario_'+i).removeAttr('disabled');
+            $('#carga_max_corregida_'+i).removeAttr('disabled');
+            $('#resistencia_mpa_'+i).removeAttr('disabled');
+            $('#resistencia_kgf_'+i).removeAttr('disabled');
+            $('#resistencia_psi_'+i).removeAttr('disabled');
+            $('#porcentaje_'+i).removeAttr('disabled');
+        }
+
+
+        $.ajax({
+            type: frm.attr('method'),
+            url: frm.attr('action'),
+            data: frm.serialize(),
+            success: function (data) {
+
+                if (data === 'ok')
+                    {
+                        UIkit.notify({
+                            message : 'Resultado de Rotura Cilindros de Concreto guardada con exito',
+                            status  : 'success',
+                            timeout : 5000,
+                            pos:'top-center'
+                        });
+
+                        ordenes_pendientes();
+                    }
+                else if(data === 'ya')
+                    {
+                        UIkit.notify({
+                            message : 'Nit/Cedula de Empresa ya Registrado',
+                            status  : 'warning',
+                            timeout : 5000,
+                            pos:'top-center'
+                        });
+
+                        for(i=1; i<= x; i++)
+                        {
+                            $('#area_cm_'+i).attr('disabled', 'disabled');
+                            $('#volumen_cm_'+i).attr('disabled', 'disabled');
+                            $('#edad_'+i).attr('disabled', 'disabled');
+                            $('#peso_unitario_'+i).attr('disabled', 'disabled');
+                            $('#carga_max_corregida_'+i).attr('disabled', 'disabled');
+                            $('#resistencia_mpa_'+i).attr('disabled', 'disabled');
+                            $('#resistencia_kgf_'+i).attr('disabled', 'disabled');
+                            $('#resistencia_psi_'+i).attr('disabled', 'disabled');
+                            $('#porcentaje_'+i).attr('disabled', 'disabled');
+                        }
+                    }
+            },
+            error: function(data) {
+                alert(data);
+            }
+        });
+        return false;
+    });
+
+</script>

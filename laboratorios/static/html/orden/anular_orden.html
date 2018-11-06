@@ -1,0 +1,81 @@
+<form method="post" action="anular_orden" id="anular_orden" class="form-horizontal">
+<div id="tok"></div>
+<fieldset class="controls">
+    <div class="control-group text-center">
+        <legend>Anulación de la orden</legend>
+    </div>
+
+    <div class="control-group">
+        <label for="quien" class="control-label">Quien solicita la anulación</label>
+        <div class="controls">
+            <input type="text" name="quien"  placeholder="quien solicito" id="quien" required maxlength="50" >
+        </div>
+    </div>
+
+    <div class="control-group">
+        <label for="motivo" class="control-label">Motivo de anulación</label>
+        <div class="controls">
+            <textarea style="width: 236px; height: 58px;" rows="3" name="motivo" id="motivo" placeholder="Motivo de la anulación de la orden"></textarea>
+        </div>
+    </div>
+
+    <div class="control-group">
+        <div class="controls">
+            <button type="submit" class="btn btn-success">Guardar</button>
+        </div>
+    </div>
+
+</fieldset>
+</form>
+
+<script>
+    var frm;
+    jQuery(document).ready(function() {
+        var s = '<input name="id" value="' +orden_editar+'" type="hidden">';
+        $('#tok').html(token+s);
+        $('#lengenda').html('<legend>Anular Orden de Servicio N°: '+orden_editar+'</legend>');
+        frm = $('#anular_orden');
+      });
+
+    frm.submit(function () {
+        $.ajax({
+            type: frm.attr('method'),
+            url: frm.attr('action'),
+            data: frm.serialize(),
+            success: function (data) {
+                if (data === 'ok')
+                    {
+                        UIkit.notify({
+                            message : 'La orden fue anulada con exito',
+                            status  : 'success',
+                            timeout : 5000,
+                            pos:'top-center'
+                        });
+                        registro_orden();
+                    }
+                else if(data === 'ya'){
+                    UIkit.notify({
+                        message : 'Disculpanos, la orden ya fue anulada anteriormente',
+                        status  : 'danger',
+                        timeout : 3000,
+                        pos:'top-center'
+                    });
+                }
+                else
+                    {
+                        UIkit.notify({
+                            message : 'Ups, algo salio mal con el formulario XD',
+                            status  : 'danger',
+                            timeout : 3000,
+                            pos:'top-center'
+                        });
+                    }
+            },
+            error: function(data) {
+                alert(data);
+            }
+        });
+        return false;
+    });
+
+</script>

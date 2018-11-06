@@ -1,0 +1,97 @@
+<div id="login">
+    <!-- BEGIN LOGIN FORM  method="post" action="web-diseraca/admin/login"   -->
+    <form id="loginform" class="form-vertical no-padding no-margin" method="post" action="login">
+        <div id="tok"></div>
+        <div class="lock">
+            <i class="icon-lock"></i>
+        </div>
+        <div class="control-wrap">
+            <h4>Ingrese Sus Datos</h4>
+            <div class="control-group">
+                <div class="controls">
+                    <div class="input-prepend">
+                        <span class="add-on"><i class="icon-user"></i></span><input name="input-username" id="input-username" type="text" placeholder="Usuario" />
+                    </div>
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="controls">
+                    <div class="input-prepend">
+                        <span class="add-on"><i class="icon-key"></i></span><input name="input-password" id="input-password" type="password" placeholder="Contraseña" />
+                    </div>
+                    <!---
+                    <div class="mtop10">
+
+                            <div class="block-hint pull-left small">
+                                <input type="checkbox" id=""> Recuerdarme
+                            </div>
+                        <div class="block-hint pull-left">
+                            <a href="javascript:;" class="" id="forget-password">Olvido Su Contraseña?</a>
+                        </div>
+
+
+                    </div>
+                    -->
+
+                    <div class="clearfix space5"></div>
+                </div>
+
+            </div>
+        </div>
+
+        <input type="submit" id="login-btn" class="btn btn-block login-btn" value="Login" />
+    </form>
+                    <!-- END LOGIN FORM -->
+</div>
+
+
+<script>
+    var frm;
+    jQuery(document).ready(function()
+    {
+        $("#tok").html(token);
+        frm = $('#loginform');
+    });
+
+    frm.submit(function () {
+        $('#login-btn').val('iniciando...');
+        $('#login-btn').attr('disabled', 'disabled');
+        $.ajax({
+            type: frm.attr('method'),
+            url: frm.attr('action'),
+            data: frm.serialize(),
+            success: function (data) {
+                if (data === 'a')
+                    {
+                        window.location='sesion';
+                    }
+                else if(data === 'login')
+                    {
+                        UIkit.notify({
+                            message : 'Contraseña Incorrecta o Usuario no Registrado',
+                            status  : 'warning',
+                            timeout : 5000,
+                            pos:'top-center'
+                        });
+                    }
+                else if(data === 'des')
+                    {
+                        UIkit.notify({
+                            message : 'Usuario Desactivado, contacte al administrador',
+                            status  : 'warning',
+                            timeout : 5000,
+                            pos:'top-center'
+                        });
+                    }
+                    $('#login-btn').removeAttr('disabled');
+                    $('#login-btn').val('Login');
+            },
+            error: function(data) {
+                alert('Contacta con el administrador de la plataforma');
+                console.log(data)
+            }
+        });
+        return false;
+    });
+
+</script>

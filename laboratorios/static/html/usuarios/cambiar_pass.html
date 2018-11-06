@@ -1,0 +1,96 @@
+<!-- cambiar_pass.html -->
+<form method="post" id="cambiar_pass" class="form-horizontal">
+    <div id="tok"></div>
+<fieldset class="controls">
+    <div class="control-group text-center">
+        <legend>Cambio de Contraseña</legend>
+    </div>
+
+    <div class="control-group">
+        <label for="antigua" class="control-label">Contraseña Antigua</label>
+        <div class="controls">
+            <input type="password" name="antigua"  placeholder="Contraseña antigua" id="antigua" required max_length="15"><span class="help-inline">*</span>
+        </div>
+    </div>
+    
+    <div class="control-group">
+        <label for="nueva" class="control-label">Contraseña Nueva</label>
+        <div class="controls">
+            <input type="password" name="nueva"  placeholder="Contraseña Nueva" id="nueva" required max_length="15"><span class="help-inline">*</span>
+        </div>
+    </div>
+    
+    <div class="control-group">
+        <label for="nuevaDos" class="control-label">Repetir Contraseña Nueva</label>
+        <div class="controls">
+            <input type="password" name="nuevaDos"  placeholder="Repetir Contraseña Nueva" id="nuevaDos" required max_length="15"><span class="help-inline">*</span>
+        </div>
+    </div>
+
+    <div class="control-group">
+        <div class="controls">
+            <button type="submit" class="btn btn-success">Guardar</button>
+        </div>
+    </div>
+
+</fieldset>
+</form>
+
+<script>
+    var frm;
+       
+    jQuery(document).ready(function() {
+        //console.log(token+' registro');
+        $('#tok').html(token);
+        frm = $('#cambiar_pass');
+      });
+    
+    frm.submit(function () {
+        $.ajax({
+            type: frm.attr('method'),
+            url: 'set_pass',
+            data: frm.serialize(),
+            success: function (data) {
+                if (data === 'ok')
+                    {
+                        UIkit.notify({
+                            message : 'Guardado Con Exito',
+                            status  : 'success',
+                            timeout : 5000,
+                            pos:'top-center'
+                        });
+                        $("#antigua").val('');
+                        $("#nueva").val('');
+                        $("#nuevaDos").val('');
+                    }
+                else if(data === 'nueva')
+                    {
+                        UIkit.notify({
+                            message : 'las contraseñas nuevas no concuerdan',
+                            status  : 'danger',
+                            timeout : 5000,
+                            pos:'top-center'
+                        });
+                        $("#nuevaDos").val('');
+                    }
+                else
+                    {
+
+                        UIkit.notify({
+                            message : 'Upps! algo salio mal, revisa la contaseña a cambiar',
+                            status  : 'danger',
+                            timeout : 5000,
+                            pos:'top-center'
+                        });
+                        $("#antigua").val('');
+                    }
+            },
+            error: function(data) {
+                alert('error');
+                console.log(data)
+            }
+        });
+        return false;
+    });
+    
+</script>

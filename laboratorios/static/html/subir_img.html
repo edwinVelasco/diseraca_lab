@@ -1,0 +1,58 @@
+<form method="post" action="add_foto" id="add_foto" class="form-horizontal" enctype="multipart/form-data">
+<div id="tok">
+
+</div>
+<fieldset>
+    <div class="control-group">
+        <legend>Firma Jefe o Encargado</legend>
+    </div>
+
+    <div class="control-group">
+        <label for="codigo" class="control-label">Codigo</label>
+        <div class="controls">
+            <input class="span3" type="text" name="title"  placeholder="Codigo" id="title" required maxlength="10">
+        </div>
+    </div>
+
+    <div class="control-group">
+        <label for="image" class="control-label">Imagen</label>
+        <div class="controls">
+            <input id="image" name="image" type="file" />
+        </div>
+    </div>
+
+    <div class="control-group">
+        <div class="controls">
+            <button type="submit" class="btn btn-success">Guardar</button>
+        </div>
+    </div>
+
+</fieldset>
+</form>
+
+<script>
+    var frm;
+    jQuery(document).ready(function() {
+        //console.log(token+' registro');
+        $('#tok').html(token);
+        frm = $('#add_foto');
+      });
+
+    frm.submit(function () {
+
+        console.log(frm.serialize());
+        $.ajax({
+            type: frm.attr('method'),
+            url: frm.attr('action'),
+            data: frm.serialize(),
+            success: function (data) {
+                alert(data);
+            },
+            error: function(data) {
+                console.log(data);
+            }
+        });
+        return false;
+    });
+
+</script>

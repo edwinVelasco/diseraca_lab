@@ -1,0 +1,95 @@
+<form method="post" action="add_convenio" id="add_convenio" class="form-horizontal">
+<div id="tok"></div>
+<fieldset class="controls">
+    <div class="control-group text-center">
+        <legend>Registro de Convenio</legend>
+    </div>
+
+    <div class="control-group">
+        <label for="empresa" class="control-label">Empresa (Nit/C.C)</label>
+        <div class="controls">
+            <input type="text" name="empresa"  placeholder="Nit o Cedula" id="empresa" required maxlength="20">
+        </div>
+    </div>
+
+    <div class="control-group">
+        <label for="autorizo" class="control-label">Autorizó</label>
+        <div class="controls">
+            <input type="text" name="autorizo"  placeholder="Autorizó" id="autorizo" required maxlength="100" >
+        </div>
+    </div>
+
+    <div class="control-group">
+        <label for="fecha_autorizacion" class="control-label">Fecha Autorización</label>
+        <div class="controls">
+            <input type=""  name="fecha_autorizacion"  placeholder="fecha autorización" id="fecha_autorizacion" required>
+        </div>
+    </div>
+
+    <div class="control-group">
+        <label for="monto" class="control-label">Total Autorizado</label>
+        <div class="controls">
+            <input type="number" name="monto"  placeholder="Total Autorizado" id="monto" required min="0">
+        </div>
+    </div>
+
+    <div class="control-group">
+        <div class="controls">
+            <button type="submit" class="btn btn-success">Guardar</button>
+        </div>
+    </div>
+
+</fieldset>
+</form>
+
+<script>
+    var frm;
+    jQuery(document).ready(function() {
+        //console.log(token+' registro');
+        $('#tok').html(token);
+        frm = $('#add_convenio');
+        d = new Date();
+        hoy = d.getFullYear()+"-"+d.getMonth()+"-"+d.getDate();
+        $("#fecha_autorizacion").datepicker({
+            maxDate: hoy
+        });
+        listado_empresa_id();
+      });
+
+    frm.submit(function () {
+        $.ajax({
+            type: frm.attr('method'),
+            url: frm.attr('action'),
+            data: frm.serialize(),
+            success: function (data) {
+                if (data === 'ok')
+                    {
+                        UIkit.notify({
+                            message : 'El convenio a sido guardada con exito',
+                            status  : 'success',
+                            timeout : 5000,
+                            pos:'top-center'
+                        });
+                        $("#empresa").val("");
+                        $("#autorizo").val("");
+                        $("#fecha_autorizacion").val("");
+                        $("#monto").val("");
+                    }
+                else
+                    {
+                        UIkit.notify({
+                            message : 'Ups, algo salio mal con el formulario XD',
+                            status  : 'danger',
+                            timeout : 3000,
+                            pos:'top-center'
+                        });
+                    }
+            },
+            error: function(data) {
+                alert(data);
+            }
+        });
+        return false;
+    });
+
+</script>

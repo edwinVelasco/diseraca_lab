@@ -1,0 +1,76 @@
+<form method="post" action="add_escala" id="add_escala" class="form-horizontal">
+<div id="tok">
+
+</div>
+<fieldset>
+    <div class="control-group text-center">
+        <legend>Registro de Escala Tn</legend>
+    </div>
+
+    <div class="control-group">
+        <label for="codigo" class="control-label">Codigo</label>
+        <div class="controls">
+            <input class="span6" type="text" name="codigo"  placeholder="Codigo de la Escala " id="codigo" required>
+        </div>
+    </div>
+
+    <div class="control-group">
+        <label for="escala" class="control-label">Escala</label>
+        <div class="controls">
+            <input type="text" name="escala"  placeholder="Escala" id="escala" required>
+        </div>
+    </div>
+
+    <div class="control-group">
+        <label for="correccion" class="control-label">Corrección</label>
+        <div class="controls">
+            <input class="span6" type="text" name="correccion"  placeholder="Corrección" id="correccion" required>
+        </div>
+    </div>
+
+    <div class="control-group">
+        <label for="factor2" class="control-label">Factor 2</label>
+        <div class="controls">
+            <input class="span6" type="text" name="factor2"  placeholder="Factor 2" id="factor2" required>
+        </div>
+    </div>
+
+    <div class="control-group">
+        <div class="controls">
+            <button type="submit" class="btn btn-success">Guardar</button>
+        </div>
+    </div>
+
+</fieldset>
+</form>
+<script>
+    var frm;
+    jQuery(document).ready(function(){
+        var s = '<input name="id" value="' +orden_editar+'" type="hidden">';
+        $('#tok').html(token+s);
+        frm = $('#add_escala');
+    });
+
+    frm.submit(function(event){
+        $.ajax({
+            type: frm.attr('method'),
+            url: frm.attr('action'),
+            data: frm.serialize(),
+            success: function (data) {
+                if (data === 'ok'){
+                    UIkit.notify({
+                        message : 'Escala Guardado Con Exito',
+                        status  : 'success',
+                        timeout : 5000,
+                        pos:'top-center'
+                    });
+                    get_escalas(orden_editar);
+                }
+            },
+            error: function(data) {
+                console.log(data);
+            }
+        });
+        return false;
+    });
+</script>

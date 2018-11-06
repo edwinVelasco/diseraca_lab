@@ -1,0 +1,34 @@
+<fieldset class="controls">
+    <div class="span12 row-fluid text-center">
+        <input type="text" class="input-medium search-query" name="busqueda" id="busqueda" placeholder="Codigo de verificación">
+        <button class="btn btn-danger" onclick="buscar($('#busqueda').val())" type="button">Buscar</button>
+    </div>
+
+    <div id="resultado_busqueda">
+
+    </div>
+
+</fieldset>
+
+
+<script>
+    function buscar(busqueda) {
+        var r = confirm("Desea anular el resultado?, recuerde que no se puede retroceder a esta accción");
+        if (r == true) {
+            $.ajax({
+                type: 'GET',
+                url: 'buscar_resultado',
+                data: {'busqueda':busqueda},
+                success: function (data) {
+                    $('#resultado_busqueda').html('');
+                    res = '<div>'+data+'</div>';
+                    $('#resultado_busqueda').html(res);
+                },
+                error: function(data) {
+                    alert(data);
+                }
+            });
+            return false;
+        }
+    }
+</script>

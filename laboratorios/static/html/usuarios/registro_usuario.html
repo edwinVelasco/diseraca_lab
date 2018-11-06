@@ -1,0 +1,140 @@
+<div class="container">
+
+<form method="post" action="add_user" id="add_usuario" class="form-horizontal">
+<div id="tok"></div>
+<fieldset class="controls">
+    <div class="control-group text-center">
+        <legend>Registro de Usuario</legend>
+    </div>
+
+    <div class="control-group">
+        <label for="nombre" class="control-label">Nombre</label>
+        <div class="controls">
+            <input class="span6" type="text" name="nombre"  placeholder="Nombre del Usuario" id="nombre" required><span class="help-inline">*</span>
+        </div>
+    </div>
+
+    <div class="control-group">
+        <label for="codigo" class="control-label">Codigo</label>
+        <div class="controls">
+            <input type="text" name="codigo"  placeholder="codigo del Usuario" id="codigo" required><span class="help-inline">*</span>
+        </div>
+    </div>
+
+    <div class="control-group">
+        <label for="telefono" class="control-label">Telefonos</label>
+        <div class="controls">
+            <input class="span6" type="text" name="telefono"  placeholder="telefonos fijo-celular" id="telefono" required><span class="help-inline">*</span>
+        </div>
+    </div>
+
+    <div class="control-group">
+        <label for="email" class="control-label">Email</label>
+        <div class="controls">
+            <input class="span6" type="email" name="email"  placeholder="email" id="email" required ><span class="help-inline">*</span>
+        </div>
+    </div>
+    
+    <div class="control-group">
+        <label for="tipo" class="control-label">Tipo de Usuario</label>
+        <div class="controls">
+            <select  id="tipo" name="tipo" >
+                <option value="n" disabled>Seleccione...</option>
+                <option value="0">Administrador</option>
+                <option value="1">Jefe</option>
+                <option value="2">Laboratorista</option>
+                <option value="3">Secretaria</option>
+                <option value="4">Cliente</option>
+            </select><span class="help-inline">*</span>
+        </div>
+    </div>
+    
+    <div class="control-group">
+        <label for="laboratorio" class="control-label">Laboratorio</label>
+        <div class="controls">
+            <select  id="laboratorio" name="laboratorio" >
+                
+            </select><span class="help-inline">*</span>
+        </div>
+    </div>
+
+    <div class="control-group">
+        <div class="controls">
+            <button type="submit" class="btn btn-success">Guardar</button>
+        </div>
+    </div>
+
+</fieldset>
+</form>
+
+</div>
+<script>
+    var frm;
+    var tipo;
+       
+    jQuery(document).ready(function() {
+        //console.log(token+' registro');
+        $('#tok').html(token);
+        frm = $('#add_usuario');
+        tipo = $('#tipo');
+        $('#nick').val('nick');
+        get_laboratorio();
+      });
+
+    frm.submit(function () {
+        $.ajax({
+            type: frm.attr('method'),
+            url: frm.attr('action'),
+            data: frm.serialize(),
+            success: function (data) {
+                if (data === 'ok')
+                    {
+                        UIkit.notify({
+                            message : 'Usuario Guardado Con Exito',
+                            status  : 'success',
+                            timeout : 5000,
+                            pos:'top-center'
+                        });
+
+                        $("#nombre").val('');
+                        $("#codigo").val('');
+                        $("#telefono").val('');
+                        $("#email").val('');
+                        $("#tipo").val('0');
+                        $("#laboratorio").val('0');
+                    }
+                else if(data === 'ya')
+                    {
+
+                        UIkit.notify({
+                            message : 'codigo de usuario ya registrado',
+                            status  : 'warning',
+                            timeout : 5000,
+                            pos:'top-center'
+                        });
+                    }
+                else if(data === 'logout')
+                    {
+                        alert('La Sesión a Caducado, Recuerda Que Caduca Cada 20 Minutos')
+                        window.location='/admin/logout';
+                    }
+                else
+                    {
+                        UIkit.notify({
+                            message : 'Ups, algo salio mal con el formulario XD',
+                            status  : 'danger',
+                            timeout : 3000,
+                            pos:'top-center'
+                        });
+                    }
+            },
+            error: function(data) {
+                alert(data);
+                console.log(data)
+            }
+        });
+        return false;
+    });
+    
+</script> 
+    

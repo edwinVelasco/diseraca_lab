@@ -1,0 +1,127 @@
+
+  <div class="span12">
+
+    <div class="row-fluid">
+
+      <div class="row-fluid">
+        <div class="span6">
+            <div class="row-fluid">
+                    <input type="text" class="input-medium search-query" name="auto_codigo" id="auto_codigo" placeholder="Codigo">
+                    <button class="btn btn-danger" onclick="buscar_codigo($('#auto_codigo').val())" type="button">Buscar</button>
+            </div>
+        </div>
+          <!--
+
+        <div class="span6">
+            <div class="row-fluid">
+
+                <input type="text" class="input-medium search-query" name="auto_nombre" id="auto_nombre" placeholder="Nombre">
+                <button class="btn btn-danger" onclick="buscar_nombre($('#auto_nombre').val())" type="button">Buscar</button>
+
+            </div>
+        </div>
+        -->
+
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+
+      var usuario_editar = "";
+
+      jQuery(document).ready(function() {
+        $.ajax({
+            type: 'GET',
+            url: 'listado_user',
+            data: '',
+            success: function (data) {
+
+                var array_codigo = [];
+                for(var i=0; i<data.length; i++){
+
+                    array_codigo[i] = data[i].fields.username;
+                }
+                $('#auto_codigo').autocomplete({
+                    source: array_codigo
+                 });
+
+            },
+            error: function(data) {
+                alert(data);
+            }
+        });
+      });
+
+      //cuando se consulte el usuario se debe cargar en el div de id="lista_usuarios"
+
+    function buscar_codigo(codigo){
+
+          $.ajax({
+        type: 'GET',
+        url: 'get_user_codigo',
+        data: {'codigo':codigo},
+        success: function (data) {
+            if (data == 'not')
+            {
+                UIkit.notify({
+                    message : 'Usario No Encontrado',
+                    status  : 'danger',
+                    timeout : 5000,
+                    pos:'top-center'
+                });
+            }
+            else if(data === 'logout')
+            {
+                alert('La Sesión a Caducado, Recuerda Que Caduca Cada 20 Minutos')
+                window.location='/administrador/logout';
+            }
+            else if(data === 'mal')
+            {
+                UIkit.notify({
+                    message : 'Ups, algo salio mal con el formulario XD',
+                    status  : 'danger',
+                    timeout : 3000,
+                    pos:'top-center'
+                });
+            }
+            else if (data === 'ok')
+            {
+                alert(data)
+            }
+            else
+            {
+                //aca si se pinta el usuario que llego, en el div="body_user"
+
+                datos = data.split(',');
+                /*
+                datos[0] --> id
+                datos[1] --> nombre
+                datos[2] --> codigo
+                datos[3] --> email
+                datos[4] --> activo
+                */
+
+                if (datos[4]=='True'){
+                    fila = '<tr><td>'+datos[1]+'</td> <td>'+datos[2]+'</td><td>'+datos[3]+'</td> <td> <button class="btn btn-danger" onclick="restaurar_pass(' +datos[0]+ ')" type="button">Restaurar</button></td> <td> <button class="btn btn-danger" onclick="editar_usuario(' +datos[0]+ ')" type="button">Editar</button>    </td> <td> <button class="btn btn-danger" onclick="activar_user('+datos[0]+')" type="button">Desactivar</button>    </td>   </tr>';
+                }
+                else{
+                    fila = '<tr><td>'+datos[1]+'</td> <td>'+datos[2]+'</td><td>'+datos[3]+'</td> <td> <button class="btn btn-danger" onclick="restaurar_pass(' +datos[0]+ ')" type="button">Restaurar</button></td> <td> <button class="btn btn-danger" onclick="editar_usuario(' +datos[0]+ ')" type="button">Editar</button>    </td> <td> <button class="btn btn-danger" onclick="desactivar_user('+datos[0]+')" type="button">Activar</button>    </td>   </tr>';
+                }
+
+                $('#body_user').html(fila)
+            }
+        },
+            error: function(data) {
+                alert('Error');
+                console.log(data)
+            }
+        });
+      }
+
+  </script>
+
+
+
+

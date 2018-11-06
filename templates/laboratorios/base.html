@@ -1,0 +1,117 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load staticfiles %}
+   <meta charset="utf-8" />
+   <title>{% block title %} {% endblock %}</title>
+    <link type="image/x-icon" rel="shortcut icon" href="{% static 'img/favicon.ico' %}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="author" content="Edwin A. Velasco, División de servicios academicos">
+    <meta name="description" content="Plataforma de laboratorios, silabsa">
+    <meta name="keywords" content="silabsa ufps laboratorio">
+
+    <link href="{% static 'uikit/css/uikit.min.css' %}" rel="stylesheet" />
+   <link href="{% static 'uikit/css/components/notify.min.css' %}" rel="stylesheet" />
+
+    <link href="{% static 'assets/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet" />
+   <link href="{% static 'assets/bootstrap/css/bootstrap-responsive.min.css' %}" rel="stylesheet" />
+   <link href="{% static 'assets/font-awesome/css/font-awesome.css' %}" rel="stylesheet" />
+
+   <link href="{% static 'css/style.css' %}" rel="stylesheet" />
+   <link href="{% static 'css/style_responsive.css' %}" rel="stylesheet" />
+   <link href="{% static 'css/style_default.css' %}" rel="stylesheet" id="style_color"/>
+
+   <link href="{% static 'assets/chosen-bootstrap/chosen/chosen.css' %}" rel="stylesheet" />
+
+   <link href="{% static 'assets/fancybox/source/jquery.fancybox.css' %}" rel="stylesheet" />
+
+   <link href="{% static 'jquery-ui/jquery-ui.min.css' %}" rel="stylesheet" />
+   <link href="{% static 'jquery-ui/jquery-ui.theme.min.css' %}" rel="stylesheet" />
+
+</head>
+<!-- END HEAD -->
+<!-- BEGIN BODY -->
+<body class="fixed-top">
+    <h1 hidden>silabsa</h1>
+   <!-- BEGIN HEADER -->
+   <div id="header" class="navbar navbar-inverse navbar-fixed-top">
+       <!-- BEGIN TOP NAVIGATION BAR -->
+       <div class="navbar-inner">
+           <div class="container-fluid">
+               <div class="top-nav ">
+                   <ul class="nav pull-right top-menu" >
+                       <!-- BEGIN SUPPORT -->
+                       <li class="dropdown" >
+                           <a href="#" class="dropdown-toggle" data-toggle="dropdown" id="tiempo"></a>
+                       </li>
+                       <!-- END SUPPORT -->
+                       <!-- BEGIN USER LOGIN DROPDOWN -->
+                       <li class="dropdown">
+                           <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                               <!-- <img src="{{STATIC_URL}}img/avatar1_small.jpg" alt=""> -->
+                               <span class="username">{% block user %} {% endblock %}</span>
+                               <b class="caret"></b>
+                           </a>
+                           <ul class="dropdown-menu">
+                               <li onclick='cambio_pass()'><a href="javascript:;"><i class="icon-edit"></i> Cambiar Contraseña</a></li>
+                               <!--<li ><a href="#"><i class="icon-user"></i> Mi Perfil</a></li>
+                               <li><a href="#"><i class="icon-tasks"></i> Mis Tareas</a></li>
+                               <li><a href="#"><i class="icon-calendar"></i> Calendario</a></li>-->
+                               <li class="divider"></li>
+                               <li><a href="logout"><i class="icon-key"></i> Salir</a></li>
+                           </ul>
+                       </li>
+                       <!-- END USER LOGIN DROPDOWN -->
+                   </ul>
+                   <!-- END TOP NAVIGATION MENU -->
+               </div>
+           </div>
+       </div>
+       <!-- END TOP NAVIGATION BAR -->
+   </div>
+   <!-- END HEADER -->
+   <!-- BEGIN CONTAINER -->
+   <div id="container" class="row-fluid">
+      <!-- BEGIN SIDEBAR -->
+      <div id="sidebar" class="nav-collapse collapse">
+         {% block menu %}
+          {% endblock %}
+      </div>
+      <!-- END SIDEBAR -->
+      <!-- BEGIN PAGE -->
+      <div id="main-content">
+         <!-- BEGIN PAGE CONTAINER-->
+         <div class="container-fluid">
+            <!-- BEGIN PAGE HEADER-->
+             {% block body %}
+
+
+             {% endblock %}
+
+            <!-- END PAGE CONTENT-->
+         </div>
+         <!-- END PAGE CONTAINER-->
+      </div>
+      <!-- END PAGE -->
+   </div>
+   <!-- END CONTAINER -->
+   <!-- BEGIN FOOTER -->
+   <div id="footer">
+       Copyright © Todos los derechos reservados Edwin A Velasco <br>
+       Contacto: edwinalbertovelasco@ufps.edu.co
+      <div class="span pull-right">
+         <span class="go-top"><i class="icon-arrow-up"></i></span>
+      </div>
+   </div>
+
+
+
+   <!-- END JAVASCRIPTS -->
+</body>
+<!-- END BODY -->
+</html>
+{% block script%}
+
+{% endblock %}

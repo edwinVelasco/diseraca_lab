@@ -1,0 +1,1041 @@
+<form method="post" action="editar_resultado_sa" id="editar_resultado_sa" class="form-horizontal">
+<div id="tok"></div>
+<fieldset>
+
+     <div class="text-center">
+         <legend>Informe de resultado, Laboratorio de Suelos Agricolas</legend>
+     </div>
+
+     <div class="text-center">
+         <input type="text" name="propietario"  id="propietario" placeholder="Propietario" title="Propietario"  required>
+         <input type="text" name="fecha_recepcion"  id="fecha_recepcion" placeholder="Fecha de recepción" title="Fecha de recepción"  required>
+         <input type="text" name="departamento"  id="departamento" placeholder="Departamento" title="Departamento"  required>
+    </div>
+    <br>
+    <div class="text-center">
+        <input type="text" name="municipio"  id="municipio" placeholder="Municipio" title="Municipio"  required>
+        <input type="text" name="vereda"  id="vereda" placeholder="Vereda" title="Vereda"  required>
+        <input type="text" name="finca"  id="finca" placeholder="Finca" title="Finca"  required>
+    </div>
+    <br>
+    <div class="text-center">
+        <input type="text" name="lote"  id="lote" placeholder="Lote" title="Lote"  required>
+        <input type="text" name="cultivo"  id="cultivo" placeholder="Cultivo" title="Cultivo" required >
+    </div>
+
+    <div class="text-center">
+         <legend>Análisis Realizados</legend>
+     </div>
+
+    <table class="table table-hover table-bordered">
+        <thead>
+            <tr>
+                <th>Análisis Quimico</th>
+                <th>Resultado</th>
+                <th>Unidad</th>
+                <th>Método</th>
+            </tr>
+        </thead>
+
+        <tbody id="tbbody">
+            <tr id="ph">
+                <th>
+                    pH
+                </th>
+                <th>
+                    <input class="span5" type="number" name="resultado_ph" id="resultado_ph"  value="0" disabled>
+                </th>
+                <th>
+                    <input type="text" name="unidad_ph" id="unidad_ph"  value="------" disabled>
+                </th>
+                <th>
+                    <select  id="metodo_ph" name="metodo_ph" disabled></select>
+                </th>
+            </tr>
+            <tr id="ce">
+                <th>
+                    Conductividad Electrica (C.E)
+                </th>
+                <th>
+                    <input class="span5" type="number" name="resultado_ce" id="resultado_ce"  value="0" disabled>
+                </th>
+                <th>
+                    <input type="text" name="unidad_ce" id="unidad_ce"  value="µ S/cm" disabled>
+                </th>
+                <th>
+                    <select  id="metodo_ce" name="metodo_ce" disabled></select>
+                </th>
+            </tr>
+            <tr id="mo">
+                <th>
+                    Materia Organica (M.O)
+                </th>
+                <th>
+                    <input class="span5" type="number" name="resultado_mo" id="resultado_mo"  value="0"   onkeyup="co()" disabled>
+                </th>
+                <th>
+                    <input type="text" name="unidad_mo" id="unidad_mo"  value="%" disabled>
+                </th>
+                <th>
+                    <select  id="metodo_mo" name="metodo_mo" disabled></select>
+                </th>
+            </tr>
+            <tr id="co">
+                <th>
+                    Carbono Organico Oxidable (CO)
+                </th>
+                <th>
+                    <input class="span5" type="text" name="resultado_co" id="resultado_co"  value="0"   disabled>
+                </th>
+                <th>
+                    <input type="text" name="unidad_co" id="unidad_co"  value="%"  disabled>
+                </th>
+                <th>
+                    <select  id="metodo_co" name="metodo_co" disabled></select>
+                </th>
+            </tr>
+            <tr id="n">
+                <th>
+                    Nitrogeno total (N)
+                </th>
+                <th>
+                    <input class="span5" type="number" name="resultado_n" id="resultado_n"  value="0"  disabled>
+                </th>
+                <th>
+                    <input type="text" name="unidad_n" id="unidad_n"  value="%"  disabled>
+                </th>
+                <th>
+                    <select  id="metodo_n" name="metodo_n" disabled></select>
+                </th>
+            </tr>
+            <tr id="p">
+                <th>
+                    Fosforo (P)
+                </th>
+                <th>
+                    <input class="span5" type="number" name="resultado_p" id="resultado_p"  value="0"  disabled >
+                </th>
+                <th>
+                    <input type="text" name="unidad_p" id="unidad_p"  value="p.p.m"  disabled>
+                </th>
+                <th>
+                    <select  id="metodo_p" name="metodo_p" disabled></select>
+                </th>
+            </tr>
+            <tr id="k">
+                <th>
+                    Potasio (K)
+                </th>
+                <th>
+                    <input class="span5" type="number" name="resultado_k" id="resultado_k"  value="0"   onkeyup="ca_k(); mg_k(); ca_mg_k(); sat_k(); cice();" disabled>
+                </th>
+                <th>
+                    <input type="text" name="unidad_k" id="unidad_k"  value="meq/100g"  disabled>
+                </th>
+                <th>
+                    <select  id="metodo_k" name="metodo_k" disabled></select>
+                </th>
+            </tr>
+            <tr id="ca">
+                <th>
+                    Calcio (Ca)
+                </th>
+                <th>
+                    <input class="span5" type="number" name="resultado_ca" id="resultado_ca"  value="0"   onkeyup="ca_mg(); ca_k(); ca_mg_k(); sat_ca(); cice();" disabled>
+                </th>
+                <th>
+                    <input type="text" name="unidad_ca" id="unidad_ca"  value="meq/100g"  disabled>
+                </th>
+                <th>
+                    <select  id="metodo_ca" name="metodo_ca" disabled></select>
+                </th>
+            </tr>
+            <tr id="mg">
+                <th>
+                    Magnesio (Mg)
+                </th>
+                <th>
+                    <input class="span5" type="number" name="resultado_mg" id="resultado_mg"  value="0"   onkeyup="ca_mg(); mg_k(); ca_mg_k(); sat_mg(); cice();" disabled>
+                </th>
+                <th>
+                    <input type="text" name="unidad_mg" id="unidad_mg"  value="meq/100g"  disabled>
+                </th>
+                <th>
+                    <select  id="metodo_mg" name="metodo_mg" disabled></select>
+                </th>
+            </tr>
+            <tr id="al">
+                <th>
+                    Aluminio (Al)
+                </th>
+                <th>
+                    <input class="span5" type="number" name="resultado_al" id="resultado_al"  value="0"   onkeyup="sat_al(); cice();" disabled>
+                </th>
+                <th>
+                    <input type="text" name="unidad_al" id="unidad_al"  value="meq/100g"  disabled>
+                </th>
+                <th>
+                    <select  id="metodo_al" name="metodo_al" disabled></select>
+                </th>
+            </tr>
+            <tr id="na">
+                <th>
+                    Sodio (Na)
+                </th>
+                <th>
+                    <input class="span5" type="number" name="resultado_na" id="resultado_na"  value="0"   onkeyup="sat_na(); cice();" disabled>
+                </th>
+                <th>
+                    <input type="text" name="unidad_na" id="unidad_na"  value="meq/100g"  disabled>
+                </th>
+                <th>
+                    <select  id="metodo_na" name="metodo_na" disabled></select>
+                </th>
+            </tr>
+            <tr id="cic">
+                <th>
+                    Capacidad de intercambio cationico (CIC)
+                </th>
+                <th>
+                    <input class="span5" type="number" name="resultado_cic" id="resultado_cic"  value="0"   onkeyup="sat_na(); sat_k(); sat_ca(); sat_mg(); sat_al();" disabled>
+                </th>
+                <th>
+                    <input type="text" name="unidad_cic" id="unidad_cic"  value="meq/100g"  disabled>
+                </th>
+                <th>
+                    <select  id="metodo_cic" name="metodo_cic" disabled></select>
+                </th>
+            </tr>
+            <tr id="cice">
+                <th>
+                    Capacidad de intercambio cationico Efectiva (CICE)
+                </th>
+                <th>
+                    <input class="span5" type="number" name="resultado_cice" id="resultado_cice"  value="0"   disabled>
+                </th>
+                <th>
+                    <input type="text" name="unidad_cice" id="unidad_cice"  value="meq/100g"  disabled>
+                </th>
+                <th>
+                    <select  id="metodo_cice" name="metodo_cice" disabled>
+                        <option value='Suma de bases y acidez intercambiable'>
+                            Suma de bases y acidez intercambiable
+                        </option>
+                    </select>
+                </th>
+            </tr>
+            <!--
+            <tr id="ai">
+                <th>
+                    Acidez intercambiable
+                </th>
+                <th>
+                    <input class="span5" type="number" name="resultado_ai" id="resultado_ai"  value="0"  disabled>
+                </th>
+                <th>
+                    <input type="text" name="unidad_ai" id="unidad_ai"  value="meq/100g"  disabled>
+                </th>
+                <th>
+                    <select  id="metodo_ai" name="metodo_ai" disabled></select>
+                </th>
+            </tr>
+            -->
+            <tr id="s">
+                <th>
+                    Azufre (S)
+                </th>
+                <th>
+                    <input class="span5" type="number" name="resultado_s" id="resultado_s"  value="0"  disabled>
+                </th>
+                <th>
+                    <input type="text" name="unidad_s" id="unidad_s"  value="p.p.m"  disabled>
+                </th>
+                <th>
+                    <select  id="metodo_s" name="metodo_s" disabled></select>
+                </th>
+            </tr>
+            <tr id="fe">
+                <th>
+                    Hierro (Fe)
+                </th>
+                <th>
+                    <input class="span5" type="number" name="resultado_fe" id="resultado_fe"  value="0"  disabled >
+                </th>
+                <th>
+                    <input type="text" name="unidad_fe" id="unidad_fe"  value="p.p.m"  disabled>
+                </th>
+                <th>
+                    <select  id="metodo_fe" name="metodo_fe" disabled></select>
+                </th>
+            </tr>
+            <tr id="mn">
+                <th>
+                    Manganeso (Mn)
+                </th>
+                <th>
+                    <input class="span5" type="number" name="resultado_mn" id="resultado_mn"  value="0"  disabled>
+                </th>
+                <th>
+                    <input type="text" name="unidad_mn" id="unidad_mn"  value="p.p.m"  disabled>
+                </th>
+                <th>
+                    <select  id="metodo_mn" name="metodo_mn" disabled></select>
+                </th>
+            </tr>
+            <tr id="cu">
+                <th>
+                    cobre (Cu)
+                </th>
+                <th>
+                    <input class="span5" type="number" name="resultado_cu" id="resultado_cu"  value="0"  disabled>
+                </th>
+                <th>
+                    <input type="text" name="unidad_cu" id="unidad_cu"  value="p.p.m"  disabled>
+                </th>
+                <th>
+                    <select  id="metodo_cu" name="metodo_cu" disabled></select>
+                </th>
+            </tr>
+            <tr id="zn">
+                <th>
+                    Zinc (Zn)
+                </th>
+                <th>
+                    <input class="span5" type="number" name="resultado_zn" id="resultado_zn"  value="0"  disabled>
+                </th>
+                <th>
+                    <input type="text" name="unidad_zn" id="unidad_zn"  value="p.p.m"  disabled>
+                </th>
+                <th>
+                    <select  id="metodo_zn" name="metodo_zn" disabled></select>
+                </th>
+            </tr>
+            <tr id="b">
+                <th>
+                    Boro (B)
+                </th>
+                <th>
+                    <input class="span5" type="number" name="resultado_b" id="resultado_b"  value="0"  disabled>
+                </th>
+                <th>
+                    <input type="text" name="unidad_b" id="unidad_b"  value="p.p.m"  disabled>
+                </th>
+                <th>
+                    <select  id="metodo_b" name="metodo_b" disabled></select>
+                </th>
+            </tr>
+        </tbody>
+
+    </table>
+
+    <div class="text-center" id="title_rel_cationicas">
+        <legend>Relaciones Cationicas</legend>
+    </div>
+
+    <table class="table table-hover table-bordered" id="tb_rel_cat">
+            <thead>
+                <tr>
+                    <th>Análisis Realizado</th>
+                    <th>Resultado</th>
+                    <th>Unidad</th>
+                    <th>Método</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th>
+                        Ca/Mg
+                    </th>
+                    <th>
+                        <input type="text" name="resultado_ca_mg" id="resultado_ca_mg"  value="0"   disabled>
+                    </th>
+                    <th>
+                        <input type="text" name="unidad_ca_mg" id="unidad_ca_mg"  value="meq/100g"  disabled>
+                    </th>
+                    <th>
+                        <input type="text" name="metodo_ca_mg" id="metodo_ca_mg"  value="División de resultado de elementos analizados"  disabled>
+                    </th>
+                </tr>
+                <tr>
+                    <th>
+                        Ca/K
+                    </th>
+                    <th>
+                        <input type="text" name="resultado_ca_k" id="resultado_ca_k"  value="0"   disabled>
+                    </th>
+                    <th>
+                        <input type="text" name="unidad_ca_k" id="unidad_ca_k"  value="meq/100g" disabled>
+                    </th>
+                    <th>
+                        <input type="text" name="metodo_ca_k" id="metodo_ca_k"  value="División de resultado de elementos analizados"  disabled>
+                    </th>
+                </tr>
+                <tr>
+                    <th>
+                        Mg/K
+                    </th>
+                    <th>
+                        <input type="text" name="resultado_mg_k" id="resultado_mg_k"  value="0"   disabled>
+                    </th>
+                    <th>
+                        <input type="text" name="unidad_mg_k" id="unidad_mg_k"  value="meq/100g" disabled>
+                    </th>
+                    <th>
+                        <input type="text" name="metodo_mg_k" id="metodo_mg_k"  value="División de resultado de elementos analizados"  disabled>
+                    </th>
+                </tr>
+
+                <tr>
+                    <th>
+                        (Ca+Mg)/K
+                    </th>
+                    <th>
+                        <input type="text" name="resultado_ca_mg_k" id="resultado_ca_mg_k"  value="0"  disabled>
+                    </th>
+                    <th>
+                        <input type="text" name="unidad_ca_mg_k" id="unidad_ca_mg_k"  value="meq/100g" disabled>
+                    </th>
+                    <th>
+                        <input type="text" name="metodo_ca_mg_k" id="metodo_ca_mg_k"  value="División de resultado de elementos analizados"  disabled>
+                    </th>
+                </tr>
+                <tr>
+                    <th>
+                        % sat de sodio (Na)
+                    </th>
+                    <th>
+                        <input type="text" name="resultado_sat_na" id="resultado_sat_na"  value="0"   disabled>
+                    </th>
+                    <th>
+                        <input type="text" name="unidad_sat_na" id="unidad_sat_na"  value="meq/100g"  disabled>
+                    </th>
+                    <th>
+                        <input type="text" name="metodo_sat_na" id="metodo_sat_na"  value="División del resultado y la CIC por cien"  disabled>
+                    </th>
+                </tr>
+                <tr>
+                    <th>
+                        % sat de Potasio (K)
+                    </th>
+                    <th>
+                        <input type="text" name="resultado_sat_k" id="resultado_sat_k"  value="0"   disabled>
+                    </th>
+                    <th>
+                        <input type="text" name="unidad_sat_k" id="unidad_sat_k"  value="meq/100g"  disabled>
+                    </th>
+                    <th>
+                        <input type="text" name="metodo_sat_k" id="metodo_sat_k"  value="División del resultado y la CIC por cien"  disabled>
+                    </th>
+                </tr>
+                <tr>
+                    <th>
+                        % sat de Calcio (Ca)
+                    </th>
+                    <th>
+                        <input type="text" name="resultado_sat_ca" id="resultado_sat_ca"  value="0"   disabled>
+                    </th>
+                    <th>
+                        <input type="text" name="unidad_sat_ca" id="unidad_sat_ca"  value="meq/100g"  disabled>
+                    </th>
+                    <th>
+                        <input type="text" name="metodo_sat_ca" id="metodo_sat_ca"  value="División del resultado y la CIC por cien"  disabled>
+                    </th>
+                </tr>
+                <tr>
+                    <th>
+                        % sat de Magnecio (Mg)
+                    </th>
+                    <th>
+                        <input type="text" name="resultado_sat_mg" id="resultado_sat_mg"  value="0"   disabled>
+                    </th>
+                    <th>
+                        <input type="text" name="unidad_sat_mg" id="unidad_sat_mg"  value="meq/100g"  disabled>
+                    </th>
+                    <th>
+                        <input type="text" name="metodo_sat_mg" id="metodo_sat_mg"  value="División del resultado y la CIC por cien"  disabled>
+                    </th>
+                </tr>
+                <tr>
+                    <th>
+                        % sat de Aluminio (Al)
+                    </th>
+                    <th>
+                        <input type="text" name="resultado_sat_al" id="resultado_sat_al"  value="0"   disabled>
+                    </th>
+                    <th>
+                        <input type="text" name="unidad_sat_al" id="unidad_sat_al"  value="meq/100g"  disabled>
+                    </th>
+                    <th>
+                        <input type="text" name="metodo_sat_al" id="metodo_sat_al"  value="División del resultado y la CIC por cien"  disabled>
+                    </th>
+                </tr>
+                <!--
+                <tr>
+                    <th>
+                        % de sat de bases (Ca, Mg, K y Na)
+                    </th>
+                    <th>
+                        <input type="text" name="resultado_ca_mg_k_na" id="resultado_ca_mg_k_na"  value="0"  disabled>
+                    </th>
+                    <th>
+                        <input type="text" name="unidad_ca_mg_k_na" id="unidad_ca_mg_k_na"  value="meq/100g" disabled>
+                    </th>
+                    <th>
+                        <input type="text" name="metodo_ca_mg_k_na" id="metodo_ca_mg_k_na"  value="División de resultado de elementos analizados"  disabled>
+                    </th>
+                </tr>
+                -->
+            </tbody>
+        </table>
+
+    <div class="text-center" id="title_af">
+        <legend>Análisis Fisico</legend>
+    </div>
+
+    <table class="table table-hover table-bordered" id="tb_af">
+        <thead>
+            <tr>
+                <th>Análisis Fisico</th>
+                <th>Resultado</th>
+                <th>Unidad</th>
+                <th>Método de Análisis</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr id="t1">
+                <th>
+                    Textura (1)
+                </th>
+                <th>
+                    <input type="text" name="resultado_t1" id="resultado_t1"  disabled>
+                </th>
+                <th>
+                    <input type="text" name="unidad_t1" id="unidad_t1" value="--------" disabled>
+                </th>
+                <th>
+                    <input type="text" name="metodo_t1" id="metodo_t1"  value="Determinación al tacto" disabled>
+                </th>
+            </tr>
+            <tr id="t2_arena">
+                <th>
+                    Textura (2) | Arena
+                </th>
+                <th>
+                    <input type="text" name="resultado_t2_arena" id="resultado_t2_arena"  disabled>
+                </th>
+                <th>
+                    <input type="text" name="unidad_t2_arena" id="unidad_t2_arena"  value="%"  disabled>
+                </th>
+                <th>
+                    <input type="text" name="metodo_t2_arena" id="metodo_t2_arena"  value="Metodo de Bouyoucos"  disabled>
+                </th>
+            </tr>
+            <tr id="t2_arcilla">
+                <th>
+                    Textura (2) | Arcilla
+                </th>
+                <th>
+                    <input type="text" name="resultado_t2_arcilla" id="resultado_t2_arcilla"  disabled>
+                </th>
+                <th>
+                    <input type="text" name="unidad_t2_arcilla" id="unidad_t2_arcilla"  value="%"   disabled>
+                </th>
+                <th>
+                    <input type="text" name="metodo_t2_arcilla" id="metodo_t2_arcilla"  value="Metodo de Bouyoucos"  disabled>
+                </th>
+            </tr>
+            <tr id="t2_limo">
+                <th>
+                    Textura (2) | Limo
+                </th>
+                <th>
+                    <input type="text" name="resultado_t2_limo" id="resultado_t2_limo"  disabled>
+                </th>
+                <th>
+                    <input type="text" name="unidad_t2_limo" id="unidad_t2_limo"  value="%"  disabled >
+                </th>
+                <th>
+                    <input type="text" name="metodo_t2_limo" id="metodo_t2_limo"  value="Metodo de Bouyoucos"  disabled>
+                </th>
+            </tr>
+
+            <tr id="t2_clase">
+                <th>
+                    Clase de Textura (2)
+                </th>
+                <th>
+                    <input type="text" name="clase_t2" id="clase_t2"  disabled>
+                </th>
+                <th>
+
+                </th>
+                <th>
+
+                </th>
+            </tr>
+        </tbody>
+    </table>
+    <br>
+    <!--
+    <div class="text-center" >
+        <textarea rows="3" name="observacion" id="observacion" placeholder="Observación" title="Observación" style="width:70%"></textarea>
+    </div>
+    <br>
+    -->
+    <div class="text-center">
+        <button type="submit" class="btn btn-success">Guardar</button>
+    </div>
+
+</fieldset>
+</form>
+
+<script>
+    var form;
+    var ensayos=[];
+    //se trae los ensayos que estan en esta lista
+    var listados = [["n","0604"],["s","0607"],["b","0608"],["ce","0609"],["cu","0611"],["fe","0612"],["mn","0613"],
+                 ["zn","0614"], ["ph","0615"],["cic","0616"],["ca","0617"],["mg","0618"],["k","0619"],["na","0620"],
+                 ["p","0621"],["co","0622"], ["al","0623"],["mo","0624"],["p","0627"], ["cic","0616"]];
+
+    var cationicas = [["ca_mg"],["ca_k"],["mg_k"],["ca_mg_k"], ["sat_na"], ["sat_k"], ["sat_ca"], ["sat_mg"], ["sat_al"]];
+
+
+    var listado_0601 = [["ph","0615"], ["mo","0624"], ["p","0627"], ["ca","0617"], ["k","0619"], ["mg","0618"],
+                        ["na","0620"], ["al","0623"],["co","0622"]];
+
+    var listado_0603 =[["cu","0611"], ["fe","0612"], ["mn","0613"], ["zn","0614"], ["b","0608"]];
+
+    var listado_0602 = [["ph","0615"], ["mo","0624"], ["p","0627"], ["ca","0617"], ["k","0619"], ["mg","0618"],
+                      ["na","0620"], ["al","0623"], ["cu","0611"], ["fe","0612"], ["mn","0613"], ["zn","0614"],
+                      ["b","0608"],["co","0622"], ["cic","0616"]];
+
+    var resultado_a_editar;
+
+
+    jQuery(document).ready(function() {
+        var s = '<input id="id" name="id" value="' +orden_editar+'" type="hidden">';
+        $('#tok').html(token+s);
+        form = $('#editar_resultado_sa');
+        $("#fecha_recepcion").datepicker();
+        //buscar_ensayos_agua();este metodo busca los ensayos de la orden que no esten terminados
+        //buscar_metodos_ensayos();
+        buscar_resultado()
+        desactivar_campos();
+    });
+
+    function buscar_metodos_ensayos(codigo){
+        if(codigo==='0601'){
+            for (i=0;i<listado_0601.length;i++)
+                metodos_ensayos(listado_0601[i][1], listado_0601[i][0]);
+
+            $('#resultado_t1').removeAttr('disabled');
+            $('#unidad_t1').removeAttr('disabled');
+            $('#metodo_t1').removeAttr('disabled');
+
+            $('#tb_af').show(); //analisis fisico
+            $('#title_af').show();
+            $('#t1').show();
+
+        }
+        else if(codigo==='0602'){
+            for (i=0;i<listado_0602.length;i++)
+                metodos_ensayos(listado_0602[i][1], listado_0602[i][0]);
+
+            $('#resultado_t2_arena').removeAttr('disabled');
+            $('#unidad_t2_arena').removeAttr('disabled');
+            $('#metodo_t2_arena').removeAttr('disabled');
+
+            $('#resultado_t2_arcilla').removeAttr('disabled');
+            $('#unidad_t2_arcilla').removeAttr('disabled');
+            $('#metodo_t2_arcilla').removeAttr('disabled');
+
+            $('#resultado_t2_limo').removeAttr('disabled');
+            $('#unidad_t2_limo').removeAttr('disabled');
+            $('#metodo_t2_limo').removeAttr('disabled');
+
+            $('#clase_t2').removeAttr('disabled');
+            $('#clase_t2').removeAttr('disabled');
+            $('#clase_t2').removeAttr('disabled');
+
+            $('#resultado_cice').removeAttr('disabled');
+            $('#unidad_cice').removeAttr('disabled');
+            $('#metodo_cice').removeAttr('disabled');
+
+            $('#tb_rel_cat').show();
+            $('#title_rel_cationicas').show();
+
+            $('#t2_clase').show();
+            $('#t2_limo').show();
+            $('#t2_arcilla').show();
+            $('#t2_arena').show();
+
+            $('#title_af').show();
+            $('#tb_af').show();
+
+            $('#cice').show();
+
+
+        }
+        else if(codigo==='0603'){
+            for (i=0;i<listado_0603.length;i++)
+                metodos_ensayos(listado_0603[i][1], listado_0603[i][0]);
+        }
+        else if(codigo==='0626'){
+
+            $('#resultado_t2_arena').removeAttr('disabled');
+            $('#unidad_t2_arena').removeAttr('disabled');
+            $('#metodo_t2_arena').removeAttr('disabled');
+
+            $('#resultado_t2_arcilla').removeAttr('disabled');
+            $('#unidad_t2_arcilla').removeAttr('disabled');
+            $('#metodo_t2_arcilla').removeAttr('disabled');
+
+            $('#resultado_t2_limo').removeAttr('disabled');
+            $('#unidad_t2_limo').removeAttr('disabled');
+            $('#metodo_t2_limo').removeAttr('disabled');
+
+            $('#clase_t2').removeAttr('disabled');
+            $('#clase_t2').removeAttr('disabled');
+            $('#clase_t2').removeAttr('disabled');
+
+            $('#t2_clase').show();
+            $('#t2_limo').show();
+            $('#t2_arcilla').show();
+            $('#t2_arena').show();
+
+            $('#title_af').show();
+            $('#tb_af').show();
+        }
+        else if(codigo==='0624'){
+            metodos_ensayos('0624','mo');
+            metodos_ensayos('0622','co');
+        }
+        else{
+            for (i=0;i<listados.length;i++){
+                if (codigo === listados[i][1]){
+                    metodos_ensayos(listados[i][1],listados[i][0]);
+                    break;
+                }
+            }
+        }
+
+
+        $('#resultado_ph').val(resultado_a_editar[10].split('#')[0]);
+        $('#unidad_ph').val(resultado_a_editar[10].split('#')[1]);
+        $('#resultado_ce').val(resultado_a_editar[11].split('#')[0]);
+        $('#unidad_ce').val(resultado_a_editar[11].split('#')[1]);
+        $('#resultado_mo').val(resultado_a_editar[12].split('#')[0]);
+        $('#unidad_mo').val(resultado_a_editar[12].split('#')[1]);
+        $('#resultado_co').val(resultado_a_editar[13].split('#')[0]);
+        $('#unidad_co').val(resultado_a_editar[13].split('#')[1]);
+        $('#resultado_n').val(resultado_a_editar[14].split('#')[0]);
+        $('#unidad_n').val(resultado_a_editar[14].split('#')[1]);
+        $('#resultado_p').val(resultado_a_editar[15].split('#')[0]);
+        $('#unidad_p').val(resultado_a_editar[15].split('#')[1]);
+        $('#resultado_k').val(resultado_a_editar[16].split('#')[0]);
+        $('#unidad_k').val(resultado_a_editar[16].split('#')[1]);
+        $('#resultado_ca').val(resultado_a_editar[17].split('#')[0]);
+        $('#unidad_ca').val(resultado_a_editar[17].split('#')[1]);
+        $('#resultado_mg').val(resultado_a_editar[18].split('#')[0]);
+        $('#unidad_mg').val(resultado_a_editar[18].split('#')[1]);
+        $('#resultado_al').val(resultado_a_editar[19].split('#')[0]);
+        $('#unidad_al').val(resultado_a_editar[19].split('#')[1]);
+        $('#resultado_na').val(resultado_a_editar[20].split('#')[0]);
+        $('#unidad_na').val(resultado_a_editar[20].split('#')[1]);
+        $('#resultado_cic').val(resultado_a_editar[21].split('#')[0]);
+        $('#unidad_cic').val(resultado_a_editar[21].split('#')[1]);
+        $('#resultado_cice').val(resultado_a_editar[22].split('#')[0]);
+        $('#unidad_cice').val(resultado_a_editar[22].split('#')[1]);
+        $('#resultado_s').val(resultado_a_editar[23].split('#')[0]);
+        $('#unidad_s').val(resultado_a_editar[23].split('#')[1]);
+        $('#resultado_fe').val(resultado_a_editar[24].split('#')[0]);
+        $('#unidad_fe').val(resultado_a_editar[24].split('#')[1]);
+        $('#resultado_mn').val(resultado_a_editar[25].split('#')[0]);
+        $('#unidad_mn').val(resultado_a_editar[25].split('#')[1]);
+        $('#resultado_cu').val(resultado_a_editar[26].split('#')[0]);
+        $('#unidad_cu').val(resultado_a_editar[26].split('#')[1]);
+        $('#resultado_zn').val(resultado_a_editar[27].split('#')[0]);
+        $('#unidad_zn').val(resultado_a_editar[27].split('#')[1]);
+        $('#resultado_b').val(resultado_a_editar[28].split('#')[0]);
+        $('#unidad_b').val(resultado_a_editar[28].split('#')[1]);
+        //relaciones cationicas
+        $('#resultado_ca_mg').val(resultado_a_editar[29].split('#')[0]);
+        $('#resultado_ca_k').val(resultado_a_editar[30].split('#')[0]);
+        $('#resultado_mg_k').val(resultado_a_editar[31].split('#')[0]);
+        $('#resultado_ca_mg_k').val(resultado_a_editar[32].split('#')[0]);
+        $('#resultado_sat_na').val(resultado_a_editar[33].split('#')[0]);
+        $('#resultado_sat_k').val(resultado_a_editar[34].split('#')[0]);
+        $('#resultado_sat_ca').val(resultado_a_editar[35].split('#')[0]);
+        $('#resultado_sat_mg').val(resultado_a_editar[36].split('#')[0]);
+        $('#resultado_sat_al').val(resultado_a_editar[37].split('#')[0]);
+        //Analisis fisico
+        $('#resultado_t1').val(resultado_a_editar[38].split('#')[0]);
+        $('#unidad_t1').val(resultado_a_editar[38].split('#')[1]);
+        $('#metodo_t1').val(resultado_a_editar[38].split('#')[2]);
+        $('#resultado_t2_arena').val(resultado_a_editar[39].split('#')[0]);
+        $('#unidad_t2_arena').val(resultado_a_editar[39].split('#')[1]);
+        $('#metodo_t2_arena').val(resultado_a_editar[39].split('#')[2]);
+        $('#resultado_t2_arcilla').val(resultado_a_editar[40].split('#')[0]);
+        $('#unidad_t2_arcilla').val(resultado_a_editar[40].split('#')[1]);
+        $('#metodo_t2_arcilla').val(resultado_a_editar[40].split('#')[2]);
+        $('#resultado_t2_limo').val(resultado_a_editar[41].split('#')[0]);
+        $('#unidad_t2_limo').val(resultado_a_editar[41].split('#')[1]);
+        $('#metodo_t2_limo').val(resultado_a_editar[41].split('#')[2]);
+        $('#clase_t2').val(resultado_a_editar[42].split('#')[0]);
+
+    }
+
+    // desactiva todos los campos del formulario
+    function desactivar_campos(){
+        for (i=0;i<listados.length;i++)
+        {
+            $('#metodo_'+listados[i][0]).attr('disabled', 'disabled');
+            $('#metodo_'+listados[i][0]).html('');
+            $('#unidad_'+listados[i][0]).attr('disabled', 'disabled');
+
+            $('#resultado_'+listados[i][0]).attr('disabled', 'disabled');
+            $('#resultado_'+listados[i][0]).val(0);
+            $('#'+listados[i][0]).hide();
+        }
+        $('#resultado_t1').attr('disabled','disabled');
+        $('#unidad_t1').attr('disabled','disabled');
+        $('#metodo_t1').attr('disabled','disabled');
+
+        $('#resultado_t2_arena').attr('disabled','disabled');
+        $('#unidad_t2_arena').attr('disabled','disabled');
+        $('#metodo_t2_arena').attr('disabled','disabled');
+
+        $('#resultado_t2_arcilla').attr('disabled','disabled');
+        $('#unidad_t2_arcilla').attr('disabled','disabled');
+        $('#metodo_t2_arcilla').attr('disabled','disabled');
+
+        $('#resultado_t2_limo').attr('disabled','disabled');
+        $('#unidad_t2_limo').attr('disabled','disabled');
+        $('#metodo_t2_limo').attr('disabled','disabled');
+
+        $('#clase_t2').attr('disabled','disabled');
+        $('#clase_t2').attr('disabled','disabled');
+        $('#clase_t2').attr('disabled','disabled');
+
+        $('#resultado_cice').attr('disabled','disabled');
+        $('#unidad_cice').attr('disabled','disabled');
+        $('#metodo_cice').attr('disabled','disabled');
+
+        $('#tb_rel_cat').hide();
+        $('#title_rel_cationicas').hide();
+        $('#t1').hide();
+        $('#t2_clase').hide();
+        $('#t2_limo').hide();
+        $('#t2_arcilla').hide();
+        $('#t2_arena').hide();
+        $('#title_af').hide();
+        $('#tb_af').hide();
+        $('#cice').hide();
+
+    }
+
+    function metodos_ensayos(codigo, selecionable){
+        $.ajax({
+            type: 'GET',
+            url: 'get_metodos_ensayo',
+            data: {'codigo':codigo},
+            success: function (data) {
+                metodos = data.split('-');
+                for(i=0; i< metodos.length; i++)
+                {
+                    $('#metodo_'+selecionable).append("<option value='"+metodos[i]+"'>"+metodos[i]+"</option>");
+                }
+                $('#metodo_'+selecionable).removeAttr('disabled');
+                $('#unidad_'+selecionable).removeAttr('disabled');
+                $('#resultado_'+selecionable).removeAttr('disabled');
+                $('#'+selecionable).show();
+            },
+            error: function(data) {
+                alert(data);
+            }
+        });
+    }
+
+    function cice(){
+        ca = $('#resultado_ca').val()
+        mg = $('#resultado_mg').val()
+        mk = $('#resultado_k').val()
+        al = $('#resultado_al').val()
+        na = $('#resultado_na').val()
+        res = parseFloat(ca)+ parseFloat(mg)+parseFloat(k)+ parseFloat(al)+parseFloat(na);
+        $('#resultado_cice').val(res.toFixed(2))
+    }
+
+    function co(){
+        x = $('#resultado_mo').val()
+        res = x/1.724;
+        $('#resultado_co').val(res.toFixed(2))
+      }
+
+    function ca_mg(){
+        ca = $('#resultado_ca').val()
+        mg = $('#resultado_mg').val()
+        res = ca/mg
+        $('#resultado_ca_mg').val(res.toFixed(2))
+    }
+
+    function ca_k(){
+        ca = $('#resultado_ca').val()
+        k = $('#resultado_k').val()
+        res = ca/k
+        $('#resultado_ca_k').val(res.toFixed(2))
+      }
+
+    function mg_k(){
+        mg = $('#resultado_mg').val()
+        k = $('#resultado_k').val()
+        res = mg/k
+        $('#resultado_mg_k').val(res.toFixed(2))
+      }
+
+    function ca_mg_k(){
+        ca = $('#resultado_ca').val()
+        mg = $('#resultado_mg').val()
+        k = $('#resultado_k').val()
+
+        res = (parseFloat(ca)+ parseFloat(mg))/parseFloat(k);
+        $('#resultado_ca_mg_k').val(res.toFixed(2))
+      }
+
+    function sat_na(){
+        na = $('#resultado_na').val()
+        cic = $('#resultado_cic').val()
+
+        res = (parseFloat(na)/ parseFloat(cic))*100;
+        $('#resultado_sat_na').val(res.toFixed(2))
+    }
+
+    function sat_k(){
+        k = $('#resultado_k').val()
+        cic = $('#resultado_cic').val()
+
+        res = (parseFloat(k)/ parseFloat(cic))*100;
+        $('#resultado_sat_k').val(res.toFixed(2))
+    }
+
+    function sat_ca(){
+        ca = $('#resultado_ca').val()
+        cic = $('#resultado_cic').val()
+
+        res = (parseFloat(ca)/ parseFloat(cic))*100;
+        $('#resultado_sat_ca').val(res.toFixed(2))
+    }
+
+    function sat_mg(){
+        mg = $('#resultado_mg').val()
+        cic = $('#resultado_cic').val()
+
+        res = (parseFloat(mg)/ parseFloat(cic))*100;
+        $('#resultado_sat_mg').val(res.toFixed(2))
+    }
+
+    function sat_al(){
+        al = $('#resultado_al').val()
+        cic = $('#resultado_cic').val()
+
+        res = (parseFloat(al)/ parseFloat(cic))*100;
+        $('#resultado_sat_al').val(res.toFixed(2))
+    }
+
+    form.submit(function(event){
+        $('#guardar').val('Cargando...');
+        $('#guardar').attr('disabled', 'disabled');
+
+
+        if(resultado_a_editar[1]==='0602')
+            desbloq_cationicos();
+
+        $.ajax({
+            type: form.attr('method'),
+            url: form.attr('action'),
+            data: form.serialize(),
+            success: function (data) {
+                if (data === 'ok')
+                {
+                    UIkit.notify({
+                        message : 'Reporte de resultado EDITADO con exito de la orden: '+orden_editar,
+                        status  : 'success',
+                        timeout : 3000,
+                        pos:'top-center'
+                    });
+                    window.location='sesion'
+                }
+                else{
+                    $('#guardar').removeAttr('disabled');
+                    $('#guardar').val('Guardar');
+                    UIkit.notify({
+                        message : 'Algo salio mal con el formulario',
+                        status  : 'danger',
+                        timeout : 3000,
+                        pos:'top-center'
+                    });
+
+                }
+            },
+            error: function(data) {
+
+            }
+
+        });
+    return false;
+    });
+
+    function bloq_cationicos() {
+        for (i=0;i<9;i++)
+        {
+            $('#metodo_'+cationicas[i]).attr('disabled', 'disabled');
+            $('#unidad_'+cationicas[i]).attr('disabled', 'disabled');
+            $('#resultado_'+cationicas[i]).attr('disabled', 'disabled');
+        }
+    }
+
+    function desbloq_cationicos() {
+        for (i=0;i<9;i++)
+        {
+            $('#metodo_'+cationicas[i]).removeAttr('disabled');
+            $('#unidad_'+cationicas[i]).removeAttr('disabled');
+            $('#resultado_'+cationicas[i]).removeAttr('disabled');
+        }
+    }
+
+    function buscar_resultado() {
+        $.ajax({
+            type: 'GET',
+            url: 'get_resultado_editar_sa',
+            data: {'resultado':orden_editar},
+            success: function (data) {
+                resultado_a_editar= data.split('\\');
+                /**
+                 * resultado_a_editar[0] --> id_resultado
+                 * resultado_a_editar[1] --> cod_resultado
+                 * resultado_a_editar[2] --> propietrio
+                 * resultado_a_editar[3] --> fecha
+                 * resultado_a_editar[4] --> dpto
+                 * resultado_a_editar[5] --> municipio
+                 * resultado_a_editar[6] --> vereda
+                 * resultado_a_editar[7] --> finca
+                 * resultado_a_editar[8] --> lote
+                 * resultado_a_editar[9] --> cultivo
+                 */
+                buscar_metodos_ensayos(resultado_a_editar[1]);
+                $('#propietario').val(resultado_a_editar[2]);
+                $('#fecha_recepcion').val(resultado_a_editar[3]);
+                $('#departamento').val(resultado_a_editar[4]);
+                $('#municipio').val(resultado_a_editar[5]);
+                $('#vereda').val(resultado_a_editar[6]);
+                $('#finca').val(resultado_a_editar[7]);
+                $('#lote').val(resultado_a_editar[8]);
+                $('#cultivo').val(resultado_a_editar[9]);
+
+            },
+            error: function(data) {
+                alert(data);
+            }
+        });
+    }
+</script>

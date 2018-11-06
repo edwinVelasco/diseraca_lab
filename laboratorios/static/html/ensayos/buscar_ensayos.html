@@ -1,0 +1,118 @@
+
+  <div class="span12">
+
+    <div class="row-fluid">
+
+      <div class="row-fluid">
+        <div class="span6">
+            <div class="row-fluid">
+
+                    <input type="text" class="input-medium search-query" name="auto_descripcion" id="auto_descripcion" placeholder="Descripción-Codigo">
+                <button class="btn btn-danger" onclick="buscar_descripcion($('#auto_descripcion').val())" type="button">Buscar</button>
+            </div>
+        </div>
+        <!--
+        <div class="span6">
+            <div class="row-fluid">
+
+                <input type="text" class="input-medium search-query" name="auto_id" id="auto_id" placeholder="Codigo">
+                    <button class="btn btn-danger" onclick="buscar_id($('#auto_id').val())" type="button">Buscar</button>
+
+            </div>
+        </div>
+        -->
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+      var ensayo_editar = '';
+
+      jQuery(document).ready(function() {
+
+        $.ajax({
+            type: 'GET',
+            url: 'listado_ensayos',
+            data: '',
+            success: function (data) {
+
+                var array_descripcion = []
+                if (data.length == 0){
+                    UIkit.notify({
+                        message : 'Ups, algo salio mal con el formulario XD',
+                        status  : 'danger',
+                        timeout : 3000,
+                        pos:'top-center'
+                    });
+                    return;
+                }
+                else{
+                    for(var i=0; i<data.length; i++){
+                        array_descripcion[i] = data[i].fields.descripcion+'-'+data[i].fields.codigo;
+                    }
+
+                    $('#auto_descripcion').autocomplete({
+                        source: array_descripcion
+                    });
+                }
+
+            },
+            error: function(data) {
+                alert(data);
+            }
+        });
+
+      });
+
+
+      function buscar_descripcion(descripcion){
+          des = descripcion.split('-');
+          console.log(descripcion)
+        $.ajax({
+        type: 'GET',
+        url: 'get_ensayo',
+        data: {'codigo':des[1]},
+        success: function (data) {
+            if (data == 'not')
+            {
+                alert('Ensayo No Encontrado');
+            }
+            else if(data === 'logout')
+            {
+                alert('La Sesión a Caducado, Recuerda Que Caduca Cada 20 Minutos');
+                window.location='logout';
+            }
+            else if(data === 'mal')
+            {
+              UIkit.notify({
+                message : 'Ups, algo salio mal con el formulario XD',
+                status  : 'danger',
+                timeout : 3000,
+                pos:'top-center'
+                });
+            }
+            else
+            {
+                datos = data.split(',');
+                /*
+                datos[0] --> id
+                datos[1] --> codigo
+                datos[2] --> descripcion
+                datos[3] --> valor
+                datos[4] --> unidad
+                datos[5] --> metodo
+                */
+                fila = '<tr>    <td>'+datos[1] +'</td> <td>'+datos[2]+'</td> <td>'+datos[3]+'</td> <td>'+datos[4]+'</td> <td>'+datos[5]+'</td> <td> <button class="btn btn-danger" onclick="editar_ensayo()" type="button">Editar</button>    </td> </tr>';
+                usuario_editar = datos[1]
+                $('#body_ensayos').html(fila)
+            }
+        },
+            error: function(data) {
+                alert('Error');
+                console.log(data)
+            }
+        });
+}
+
+  </script>

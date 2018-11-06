@@ -1,0 +1,234 @@
+<form method="post" action="add_resultado_nutricion" id="add_resultado_nutricion" class="form-horizontal">
+<div id="tok"></div>
+<fieldset>
+
+     <div class="control-group text-center">
+         <legend>Informe de resultado, Laboratorio de Nutrición Animal y Analisis de Alimentos</legend>
+     </div>
+
+     <div class="control-group text-center">
+         <input type="text" name="codigo_muestra"  id="codigo_muestra" placeholder="Codigo de la Muestra" title="Codigo de la Muestra" required>
+         <input type="text" name="tipo_muestra"  id="tipo_muestra" placeholder="Tipo de la Muestra" title="Tipo de la Muestra" required>
+    </div>
+
+
+    <div class="control-group text-center">
+        <textarea style="width: 380px; height: 76px;" rows="3" name="descripcion" id="descripcion" placeholder="Descripción" title="Descripción"></textarea>
+    </div>
+    <br/>
+
+    <div class="control-group text-center">
+        Ensayos de la Orden
+        <select  id="lista_ensayos" name="ensayos" onchange="add_ensayo_tabla()">
+        </select>
+    </div>
+    <br/>
+
+    <table class="table table-hover table-bordered" id="filed">
+        <thead>
+            <tr>
+                <th>N° Ensayo</th>
+                <th>Descripción del Ensayo</th>
+                <th>Metodo</th>
+                <th>Resultado</th>
+                <th>Eliminar</th>
+            </tr>
+        </thead>
+
+        <tbody id="tbbody">
+
+        </tbody>
+
+    </table>
+    <br/>
+
+    <div class="control-group text-center">
+        <button type="submit" class="btn btn-success" id="guardar">Guardar</button>
+    </div>
+
+</fieldset>
+</form>
+
+<script>
+    var form;
+    var ensayos=[];
+    var listados=[];
+
+    jQuery(document).ready(function() {
+        var s = '<input name="id" value="' +orden_editar+'" type="hidden">';
+        $('#tok').html(token+s+'<input name="n_ensayo" id ="n_ensayo" value=0 type="hidden">');
+        form = $('#add_resultado_nutricion');
+        buscar_ensayos();
+      });
+
+    function buscar_ensayos(){
+        console.log('hola');
+        $.ajax({
+            type: 'GET',
+            url: 'get_ensayos_agua',
+            data: {'orden':orden_editar},
+            success: function (data) {
+
+                $('#lista_ensayos').append("<option value='0'>Seleccione...</option>");
+
+                cantidad =0;
+                for(i=0; i< data.length; i++)
+                {
+                    if (data[i].fields.hechas < data[i].fields.cantidad)
+                    {
+                        get_ensayo_orden(data[i].fields.ensayo, i);
+                        cantidad++;
+                    }
+                }
+
+                if (cantidad == 0)
+                {
+                    UIkit.notify({
+                        message : 'No hay Ensayos por realizar, termine la orden '+orden_editar,
+                        status  : 'danger',
+                        timeout : 4000,
+                        pos:'top-center'
+                    });
+                    window.location='sesion'
+                }
+            },
+            error: function(data) {
+                alert(data);
+            }
+        });
+    }
+
+    function get_ensayo_orden(ensayo, numero){
+        $.ajax({
+            type: 'GET',
+            url: 'get_ensayo_lab',
+            data: {'id':ensayo},
+            success: function (data) {
+                if (data != 'error')
+                {
+                    en = data.split(',');
+                    ensayos[numero] = en;
+                    $('#lista_ensayos').append("<option value='"+(numero+1)+"'>"+en[1].toLowerCase()+"</option>");
+                }
+            },
+            error: function(data) {
+                alert(data);
+            }
+        });
+    }
+
+    function add_ensayo_tabla(){
+        // ensayos --> [2]= codigo [1]=descripcion [3]=metodo [4]=unidad
+
+        id = $('#lista_ensayos').val();
+        id = id-1;
+
+        if (listados.length != 0)
+        {
+            for (w=0; w < listados.length; w++)
+            {
+                if (listados[w] == id)
+                {
+                    UIkit.notify({
+                        message : 'El ensayo ya fue agregado a la entrega de resultados',
+                        status  : 'warning',
+                        timeout : 3000,
+                        pos:'top-center'
+                    });
+                    return;
+                }
+            }
+        }
+
+        listados[listados.length] = id;
+        n_ensayo = $('#n_ensayo').val();
+        n_ensayo++;
+        $('#n_ensayo').val(n_ensayo);
+
+        codigo = '<th>'+'<input class="span12" type="text" name="codigo_'+id+'" id="codigo_'+id+'"  value="'+ensayos[id][2]+'" disabled></th>';
+        descripcion = '<th>'+'<input class="span12" type="text" name="descripcion_'+id+'" id="descripcion_'+id+'"  value="'+ensayos[id][1].toLowerCase()+'" disabled></th>';
+        metodo = '<th><select  id="metodo_'+id+'" name="metodo_'+id+'"></select></th>';
+        resultado = '<th>'+'<input class="span12" type="text" name="resultado_'+id+'" id="resultado_'+id+'"  value="0" required>'+'</th>';
+        eliminar = '<th><button class="btn btn-danger" onclick="eliminar_fila_ensayo('+id+')" type="button">Eliminar</button></th>';
+
+        fila = '<tr id="ensayo_'+id+'">'+codigo+descripcion+metodo+resultado+eliminar+'</tr>';
+
+        $('#tbbody').append(fila);
+
+        metodos = ensayos[id][3].split('-');
+
+        for (w=0; w<metodos.length; w++){
+            $('#metodo_'+id).append("<option value='"+metodos[w]+"'>"+metodos[w].toLowerCase()+"</option>");
+        }
+    }
+
+    function eliminar_fila_ensayo(id){
+
+        for (w=0; w < listados.length; w++)
+        {
+            if (listados[w] == id)
+            {
+                listados[w] = 'na'
+                $('#ensayo_'+id).remove();
+            }
+        }
+    }
+
+    form.submit(function(event){
+        $('#guardar').val('Cargando...');
+        $('#guardar').attr('disabled', 'disabled');
+        interruptor = false; //esto es para saber si hay ensayos registrados en el reporte de resultados
+
+        for(j=0; j< listados.length; j++)
+        {
+            if (listados[j] != 'na')
+            {
+                $('#codigo_'+listados[j]).removeAttr('disabled');
+                $('#descripcion_'+listados[j]).removeAttr('disabled');
+                $('#unidad_'+listados[j]).removeAttr('disabled');
+                interruptor = true;
+            }
+        }
+
+        if(!interruptor)
+        {
+            UIkit.notify({
+                message : 'No hay ensayos registrado en la muestra de resultados',
+                status  : 'danger',
+                timeout : 3000,
+                pos:'top-center'
+            });
+            event.preventDefault();
+            $('#guardar').removeAttr('disabled');
+            $('#guardar').val('Guardar');
+            return;
+        }
+
+        $.ajax({
+            type: form.attr('method'),
+            url: form.attr('action'),
+            data: form.serialize(),
+            success: function (data) {
+                if (data === 'ok')
+                {
+                    UIkit.notify({
+                        message : 'Reporte de resultado guardado con exito de la orden: '+orden_editar,
+                        status  : 'success',
+                        timeout : 3000,
+                        pos:'top-center'
+                    });
+                    window.location='sesion'
+
+                }
+
+            },
+            error: function(data) {
+
+            }
+
+        });
+    return false;
+
+    });
+
+</script>

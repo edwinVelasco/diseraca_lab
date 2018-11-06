@@ -1,0 +1,431 @@
+<form method="post" action="editar_orden" id="editar_orden" class="form-horizontal">
+<div id="tok"></div>
+<fieldset class="text-center">
+    <div class="control-group" id="lengenda">
+
+    </div>
+
+    <div class="form-inline">
+        <div class="span4">
+            <label for="consignacion" class="span4" >Consignación</label>
+            <input type="text" class="span8" name="consignacion"  id="consignacion"  placeholder="número de consignación">
+        </div>
+
+        <div class="span4">
+            <label for="num_factura" class="span4">Número de factura</label>
+            <input type="text" name="num_factura"  id="num_factura"  placeholder="número de factura" class="span8">
+        </div>
+
+        <div class="span4">
+            <label for="fecha_factura" class="span4">Fecha Factura</label>
+            <input type="" name="fecha_factura"  id="fecha_factura" >
+        </div>
+
+    </div>
+
+    <table class="table table-hover table-bordered" id="filed">
+        <thead>
+            <tr>
+                <th>N° Ensayo</th>
+                <th>Descripción del Ensayo</th>
+                <th>Cantidad</th>
+                <th>Valor Unitario</th>
+                <th>Sub Total</th>
+                <th>Eliminar</th>
+            </tr>
+        </thead>
+
+        <tbody id="tbbody">
+
+        </tbody>
+
+    </table>
+
+    <br>
+    <div class="control-group">
+        <button id="button_fila" class="btn btn-danger" onclick="add_fila()" type="button" >Agregar Fila</button>
+    </div>
+
+    <div class="form-inline">
+
+        <label for="total">Total</label>
+        <input type="number" name="total"  id="total" disabled value="0">
+
+        <label for="descuento">Descuento</label>
+        <input type="text" name="descuento"  id="descuento" disabled value="0" >
+
+        <label class="checkbox">
+            <input type="checkbox" name="beneficiario" id="beneficiario">Beneficiario
+        </label>
+        <label class="checkbox">
+            <input type="checkbox" name="pendiente" id="pendiente">Pendiente
+        </label>
+        <label class="checkbox">
+            <input type="checkbox" name="factura" id="factura">Factura
+        </label>
+    </div>
+    <br>
+
+    <div class="form-inline">
+        <label for="observacion">Observación</label>
+        <textarea style="width: 236px; height: 58px;" rows="3" name="observacion" id="observacion" placeholder="para separar la siguiente linea colocar el caracter %"></textarea>
+
+    </div>
+    <br>
+    <div class="control-group">
+        <button type="submit" class="btn btn-success">Guardar Orden</button>
+    </div>
+
+
+</fieldset>
+</form>
+
+<script>
+    var total=0;
+    var descuento =0;
+    var beneficiario = 0;
+    var ensayo = [];
+    var consignacion;
+    var num_factura;
+    var observacion;
+    var labo="";
+    var pend="";
+    var lista_ensayo = [];
+    var frm;
+    var id_ensayo;
+    var descripcion_ensayo;
+    var valor_ensayo;
+
+    jQuery(document).ready(function(){
+        var s = '<input name="id" value="' +orden_editar+'" type="hidden">';
+        $('#tok').html(token+s);
+        $('#lengenda').html('<legend>Editar Orden de Servicio N°: '+orden_editar+'</legend>');
+
+        frm = $('#editar_orden');
+        buscar_orden_editar();
+    });
+
+    function buscar_orden_editar(){
+        $.ajax({
+            type: 'GET',
+            url: 'orden_para_editar',
+            data: {'id':orden_editar},
+            success: function (data)
+            {
+                console.log(data);
+                if(data === 'not'){
+
+                }
+                else if(data === 'm'){
+                    alert('multiples objetos retornados');
+                }
+                else
+                {
+                    datos = data.split(',');
+                    console.log(data);
+                    total = datos[0]*1;
+                    beneficiario = datos[1];
+                    descuento = datos[2]*1;
+                    consignacion = datos[3];
+                    num_factura = datos[4];
+                    observacion = datos[5];
+                    labo = datos[6];
+                    pend = datos[8];
+                    fecha_factura = datos[7]
+                    //console.log(fecha_factura+' fecha de la factura');
+                    if(fecha_factura != "None")
+                    {
+                        $("#fecha_factura").datepicker();
+                        $("#fecha_factura").val(fecha_factura);
+                    }
+                    else
+                        $("#fecha_factura").datepicker().datepicker("setDate", new Date());
+
+                    $('#descuento').val(descuento);
+                    $('#total').val(total);
+                    if(beneficiario=='1')
+                    {
+                        $('#beneficiario').attr('checked', true);
+                    }
+
+                    if(pend=='True')
+                    {
+                        $('#pendiente').attr('checked', true);
+                    }
+                    $('#consignacion').val(consignacion);
+                    $('#num_factura').val(num_factura);
+                    $('#observacion').val(observacion);
+
+
+                    buscar_ensayos_orden();
+                }
+            },
+            error: function(data) {
+                alert(error);
+            }
+        });
+
+    }
+
+    function buscar_ensayos_orden(){
+        $.ajax({
+            type: 'GET',
+            url: 'get_ensayos_orden',
+            data: {'id':orden_editar},
+            success: function (data)
+            {
+                console.log(data);
+                var as = 0;
+                for(i=0; i< data.length; i++)
+                {
+                    lista_ensayo[i] = data[i].pk;
+                    codigo = '<input type="" class="span12" name="codigo_tb'+data[i].pk+'" id="codigo_tb'+data[i].pk+'" placeholder="Codigo" value="" required disabled>';
+                    des = '<input type="" class="span12" name="descripcion_tb'+data[i].pk+'" id="descripcion_tb'+data[i].pk+'" placeholder="Descripción" required value="" disabled>';
+                    cantidad = '<input type="number" class="span12" name="cantidad_tb'+data[i].pk+'" id="cantidad_tb'+data[i].pk+'" value="'+data[i].fields.cantidad+'" placeholder="Cantidad" required onchange="suma_cantidad_anterior('+data[i].pk+')" min="1" required>';
+                    valor = '<input type="number" class="span12" name="valor_tb'+data[i].pk+'" id="valor_tb'+data[i].pk+'" placeholder="Valor" enabled="false" value="'+data[i].fields.valor_uni+'" required disabled>';
+                    sub = '<input type="number" class="span12" name="sub_tb'+data[i].pk+'" id="sub_tb'+data[i].pk+'" placeholder="Subtotal" value="'+data[i].fields.subtotal+'" disabled>';
+
+                    fila = '<tr id="tb'+data[i].pk+'"> <th>'+codigo+'</th> <th>'+des+'</th> <th>'+cantidad+'</th> <th>'+valor+'</th> <th>'+sub+'</th> <th></th> </tr>';
+
+                    $('#tbbody').append(fila);
+
+                    if(data[i].fields.ensayo===1)
+                    {
+                        $('#button_fila').attr('disabled','disabled');
+                        as = 1;
+                    }
+
+                    get_descripciones(data[i].fields.ensayo, data[i].pk)
+                }
+                if (as==0)
+                    buscar_ensayos();
+
+            },
+            error: function(data) {
+                alert(error);
+            }
+        });
+    }
+    /**
+     *
+     * @param etiqueta esta se utiliza para sacar el value del los input
+     * catidad y valor_unitario
+     */
+    function suma_cantidad_anterior(etiqueta){
+        c = $('#cantidad_tb'+etiqueta).val();
+        v = $('#valor_tb'+etiqueta).val();
+
+        $('#sub_tb'+etiqueta).val(c*v);
+
+        sumar_total();
+    }
+
+    function get_descripciones(ensayo, pk){
+        //pk es la llave primaria de la orden_ensayo
+            $.ajax({
+            type: 'GET',
+            url: 'get_ensayo_id',
+            data: {'id':ensayo},
+            success: function (data)
+            {
+                das = data.split(',')
+                $('#descripcion_tb'+pk).val(das[1]);
+                $('#codigo_tb'+pk).val(das[0]);
+
+            },
+            error: function(data) {
+                alert(error);
+            }
+        });
+
+    }
+
+    function buscar_ensayos(){
+        $.ajax({
+            type: 'GET',
+            url: 'get_ensayo',
+            data: {'codigo':'0000'},
+            success: function (data)
+            {
+                if(data === 'not'){
+
+                }
+                else
+                {
+                    datos = data.split(',');
+
+                    id_ensayo = datos[0];
+                    descripcion_ensayo= datos[2];
+                    valor_ensayo= datos[3];
+                }
+
+                //buscar_ensayos_orden();
+
+            },
+            error: function(data) {
+                alert(error);
+            }
+        });
+    }
+
+    function eliminar_fila(){
+        $('#tb0').remove();
+        sumar_total();
+        $('#button_fila').removeAttr('disabled');
+    }
+
+    function add_fila(){
+
+        codigo = '<input type="" class="span12" name="codigo_tb0" id="codigo_tb0" placeholder="Codigo" value="0000" required>';
+        des = '<input type="" class="span12" name="descripcion_tb0" id="descripcion_tb0" placeholder="Descripción" required value="'+descripcion_ensayo+'" onchange="completar_fila(this)">';
+        cantidad = '<input type="number" class="span12" name="cantidad_tb0" id="cantidad_tb0" value="1" placeholder="Cantidad" required onchange="aumentar_cantidad()" min="1" required>';
+        valor = '<input type="number" class="span12" name="valor_tb0" id="valor_tb0" placeholder="Valor" enabled="false" value="'+valor_ensayo+'" required  onKeyUp="aumentar_cantidad()" >';
+        sub = '<input type="number" class="span12" name="sub_tb0" id="sub_tb0" placeholder="Subtotal" value="'+valor_ensayo+'" disabled>';
+
+        fila = '<tr id="tb0"> <th>'+codigo+'</th> <th>'+des+'</th> <th>'+cantidad+'</th> <th>'+valor+'</th> <th>'+sub+'</th> <th><button class="btn btn-danger" onclick="eliminar_fila()" type="button">Eliminar</button></th> </tr>';
+
+        $('#tbbody').append(fila);
+        sumar_total();
+
+        $('#button_fila').attr('disabled', 'disabled');
+    }
+
+    function aumentar_cantidad(){
+
+        valor = $('#valor_tb0').val()*1;
+        cantidad = $('#cantidad_tb0').val()*1;
+
+        $('#sub_tb0').val(cantidad*valor);
+
+        sumar_total();
+        //sumar el valor de total con el ingresado a continuacion en sub
+    }
+
+    function sumar_total(){
+        t = total_ensayos_anteriores();
+
+        subtotal = $('#sub_tb0');
+
+        if (subtotal.length > 0)
+        {
+            t += subtotal.val()*1;
+        }
+        else
+            console.log('no esta la etiqueta');
+
+        if($('#beneficiario').is(":checked")){
+
+            $('#descuento').val(t/2);
+            $('#total').val(t/2);
+        }
+        else{
+            $('#total').val(t);
+            $('#descuento').val(0);
+        }
+    }
+
+    function total_ensayos_anteriores(){
+        tt = 0;
+        for(i=0; i< lista_ensayo.length; i++)
+        {
+            tt += $('#sub_tb'+lista_ensayo[i]).val()*1;
+        }
+        return tt;
+    }
+
+    $('#beneficiario').change(function() {
+        if($(this).is(":checked")) {
+            t = $('#total').val()*1;
+            $('#descuento').val(t/2);
+            $('#total').val(t/2);
+        }
+        else{
+            sumar_total();
+        }
+    });
+
+    frm.submit(function(event){
+
+        $('#descuento').removeAttr('disabled');
+        $('#total').removeAttr('disabled');
+
+        subtotal = $('#sub_tb0');
+
+        if (subtotal.length > 0)
+        {
+            subtotal.removeAttr('disabled');
+        }
+        else
+            console.log('no esta la etiqueta');
+
+        for(i=0;i<lista_ensayo.length; i++)
+        {
+            $('#valor_tb'+lista_ensayo[i]).removeAttr('disabled');
+            $('#sub_tb'+lista_ensayo[i]).removeAttr('disabled');
+        }
+
+        $.ajax({
+            type: frm.attr('method'),
+            url: frm.attr('action'),
+            data: frm.serialize(),
+            success: function (data) {
+
+                if (data === 'error form')
+                    {
+                        UIkit.notify({
+                            message : 'error en el formulario',
+                            status  : 'danger',
+                            timeout : 3000,
+                            pos:'top-center'
+                        });
+
+                        desactivarInput();
+                    }
+                else if(data === 'logout')
+                    {
+                        alert('La Sesión a Caducado, Recuerda Que Caduca Cada 20 Minutos')
+                        window.location='/logout';
+                    }
+                else
+                    {
+                        UIkit.notify({
+                            message : 'Orden Guardada Con Exito Número '+data,
+                            status  : 'success',
+                            timeout : 8000,
+                            pos:'top-center'
+                        });
+                        registro_orden();
+                    }
+            },
+            error: function(data) {
+
+                desactivarInput();
+                console.log(data)
+            }
+        });
+        return false;
+
+    });
+
+    function desactivarInput()
+    {
+        $('#descuento').attr('disabled','disabled');
+        $('#total').attr('disabled','disabled');
+
+        for(i=0;i<lista_ensayo.length; i++)
+        {
+            $('#valor_tb'+lista_ensayo[i]).attr('disabled','disabled');
+            $('#sub_tb'+lista_ensayo[i]).attr('disabled','disabled');
+        }
+
+        subtotal = $('#sub_tb0');
+
+        if (subtotal.length > 0)
+        {
+            subtotal.attr('disabled','disabled');
+        }
+        else
+            console.log('no esta la etiqueta');
+    }
+
+</script>

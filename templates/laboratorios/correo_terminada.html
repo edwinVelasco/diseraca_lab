@@ -1,0 +1,58 @@
+    {% load staticfiles %}
+
+    <!-- Bootstrap core CSS -->
+        <link href="{% static 'bootstrap3/css/bootstrap.min.css' %}" rel="stylesheet" />
+        <link href="{% static 'css/style_correo.css' %}" rel="stylesheet" />
+        <script src="{% static 'js/jquery-1.11.js'%}"></script>
+        <script src="{% static 'bootstrap3/js/bootstrap.min.js'%}"></script>
+
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+
+    <!-- Custom styles for this template -->
+
+    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+
+    <div class="container">
+        <br>
+      <div class="header clearfix" style="">
+        <h3 class="text-muted text-center" >Diseraca-UFPS</h3>
+      </div>
+        <br><br>
+        <div class="col-xs-12">
+            <p class="lead">Mensaje de terminación de orden</p>
+        </div>
+        <div class="col-xs-12">
+            <p class="lead text-justify">
+                A la división de servicios academicos de la UFPS le complace informar
+                que la orden <mark><strong>{{ orden }}</strong></mark> solicitada al laboratorio
+                <mark><strong>{{ lab }} </strong></mark>
+                fue termina en su totalidad, para mayor información acercarse al laboratorio
+            </p>
+
+        </div>
+
+      <div class="col-xs-12">
+          <address>
+              <strong>Diseraca, UFPS.</strong>
+              <br>
+                Avenida Gran Colombia No. 12E-96 Barrio Colsag
+              <br>
+                Edificio CREAD, piso 3.
+              <br>
+                <abbr title="Telefono">Tel:</abbr>5753256-5776655 ext 301-302
+          </address>
+          <address>
+              <strong>Correo de contacto</strong><br>
+              <a href="mailto:#">diseraca@ufps.edu.co</a>
+          </address>
+
+      </div>
+
+    </div> <!-- /container -->
+

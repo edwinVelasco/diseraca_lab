@@ -1,0 +1,166 @@
+<form method="post" action="editar_user" id="editar_usuario" class="form-horizontal">
+<div id="tok"></div>
+<fieldset class="controls">
+    <div class="control-group text-center">
+        <legend>Edición de Usuario</legend>
+    </div>
+
+    <div class="control-group">
+        <label for="nombre" class="control-label">Nombre</label>
+        <div class="controls">
+            <input class="span6" type="text" name="nombre"  placeholder="Nombre del Administrador" id="nombre" required><span class="help-inline">*</span>
+        </div>
+    </div>
+
+    <div class="control-group">
+        <label for="codigo" class="control-label">Codigo</label>
+        <div class="controls">
+            <input type="text" name="codigo"  placeholder="codigo del Administrador" id="codigo" required><span class="help-inline">*</span>
+        </div>
+    </div>
+
+    <div class="control-group">
+        <label for="telefono" class="control-label">Telefonos</label>
+        <div class="controls">
+            <input class="span6" type="text" name="telefono"  placeholder="telefonos fijo-celular" id="telefono" required><span class="help-inline">*</span>
+        </div>
+    </div>
+
+    <div class="control-group">
+        <label for="email" class="control-label">Email</label>
+        <div class="controls">
+            <input class="span6" type="email" name="email"  placeholder="email" id="email" required ><span class="help-inline">*</span>
+        </div>
+    </div>
+
+    <div class="control-group">
+        <label for="tipo" class="control-label">Tipo de Usuario</label>
+        <div class="controls">
+            <select  id="tipo" name="tipo" >
+                <option value="n" disabled>Seleccione...</option>
+                <option value="0">Administrador</option>
+                <option value="1">Jefe</option>
+                <option value="2">Laboratorista</option>
+                <option value="3">Secretaria</option>
+                <option value="4">Cliente</option>
+            </select><span class="help-inline">*</span>
+        </div>
+    </div>
+
+    <div class="control-group">
+        <label for="laboratorio" class="control-label">Laboratorio</label>
+        <div class="controls">
+            <select  id="laboratorio" name="laboratorio" >
+
+            </select><span class="help-inline">*</span>
+        </div>
+    </div>
+
+
+    <div class="control-group">
+        <div class="controls">
+            <button type="submit" class="btn btn-success">Actualizar</button>
+        </div>
+    </div>
+
+</fieldset>
+</form>
+<script>
+    var frm;
+    var tipo;
+
+    jQuery(document).ready(function() {
+        var s = '<input name="id" value="' +usuario_editar+'" type="hidden">';
+        $('#tok').html(token+s);
+
+        frm = $('#editar_usuario');
+        tipo = $('#tipo');
+        get_laboratorio();
+        get_usuario(usuario_editar);
+      });
+
+    function get_usuario(id){
+        $.ajax({
+            type: 'GET',
+            url: 'get_user',
+            data: {'id':id},
+            success: function (data) {
+
+                if (data == 'not')
+                {
+                    alert('Usario No Encontrado');
+                }
+                else if(data === 'logout')
+                {
+                    alert('La Sesión a Caducado, Recuerda Que Caduca Cada 20 Minutos')
+                    window.location='logout';
+                }
+                else
+                {
+                    console.log(data);
+                    datos = data.split(',');
+                    $('#nombre').val(datos[1]);
+                    $('#codigo').val(datos[2]);
+                    $('#telefono').val(datos[3]);
+                    $('#email').val(datos[4]);
+                    $('#tipo').val(datos[5]);
+
+                    if (datos[7] == 'True')
+                        $('#encargado').attr('checked', true);
+
+                    seleccionar_lab(datos[6])
+
+                }
+
+            },
+            error: function(data) {
+                alert(data);
+            }
+        });
+    }
+
+    function seleccionar_lab(lb){
+        $('#laboratorio').val(lb);
+    }
+
+
+    frm.submit(function () {
+        $.ajax({
+            type: frm.attr('method'),
+            url: frm.attr('action'),
+            data: frm.serialize(),
+            success: function (data) {
+                if (data === 'ok')
+                    {
+                        UIkit.notify({
+                            message : 'Guardado Con Exito',
+                            status  : 'success',
+                            timeout : 5000,
+                            pos:'top-center'
+                        });
+                        listado_user();
+                    }
+                else if(data === 'logout')
+                    {
+                        alert('La Sesión a Caducado, Recuerda Que Caduca Cada 20 Minutos')
+                        window.location='/administrador/logout';
+                    }
+                else
+                    {
+                        UIkit.notify({
+                            message : 'Upps! algo salio mal, revisa los datos XD',
+                            status  : 'danger',
+                            timeout : 5000,
+                            pos:'top-center'
+                        });
+                    }
+            },
+            error: function(data) {
+                alert(data);
+                console.log(data)
+            }
+        });
+        return false;
+    });
+
+</script>

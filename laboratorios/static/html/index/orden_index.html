@@ -1,0 +1,302 @@
+<form method="post" action="add_orden" id="add_orden" class="form-horizontal">
+<div id="tok"></div>
+<fieldset >
+    <div class="control-group">
+        <legend>Registro de Orden de Servicio</legend>
+    </div>
+
+    <div class="controls controls-row">
+        <div class="span6">
+            <label for="laboratorio" class="control-label">Laboratorio</label>
+            <div class="controls">
+                <select  class="span8" id="laboratorio" name="laboratorio" ></select>
+            </div>
+        </div>
+
+        <div class="span6">
+            <button class="btn btn-danger" onclick="lista_ensayos()" type="button" id="listar_ensayo">Listar Ensayos</button>
+        </div>
+    </div>
+
+    <br/>
+    <div class="controls controls-row">
+        <div class="span6">
+            <label for="empresa" class="control-label">Empresa (Nit/CC)</label>
+            <div class="controls">
+                <input class="span8" type="" id="empresa" name="empresa" placeholder="">
+            </div>
+        </div>
+
+        <div class="span6">
+            <label for="consignacion" class="control-label">N° Consignación</label>
+            <div class="controls">
+                <input class="span6" type="" id="consignacion" name="consignacion" placeholder="Consignación">
+            </div>
+        </div>
+    </div>
+    <br/>
+
+    <table class="table table-hover table-bordered" id="filed">
+        <thead>
+            <tr>
+                <th>N° Ensayo</th>
+                <th>Descripción del Ensayo</th>
+                <th>Cantidad</th>
+                <th>Valor Unitario</th>
+                <th>Sub Total</th>
+                <th>Eliminar</th>
+            </tr>
+        </thead>
+
+        <tbody id="tbbody">
+
+
+
+
+        </tbody>
+    </table>
+
+
+    <br/>
+    <br/>
+    <div class="controls controls-row">
+
+        <div class="span3">
+            <button id="button_fila" class="btn btn-danger" onclick="add_fila(3)" type="button" disabled>Agregar Fila</button>
+        </div>
+
+        <div class="span3">
+            <label class="checkbox">
+                <input type="checkbox" name="beneficiario" id="beneficiario">Beneficiario Acuerdo
+            </label>
+        </div>
+
+        <div class="span6">
+            <label for="total" class="control-label" >Valor Total</label>
+            <div class="controls">
+                <input type="number" name="total"  id="total" disabled value="0">
+            </div>
+        </div>
+
+    </div>
+
+    <br/>
+    <div class="controls controls-row">
+        <div class="span6">
+            <label for="observacion" class="control-label">Observación</label>
+            <div class="controls">
+                <textarea style="width: 236px; height: 58px;" rows="3" name="observacion" id="observacion"></textarea>
+            </div>
+        </div>
+
+        <div class="span6">
+            <label for="descuento" class="control-label">Descuento</label>
+            <div class="controls">
+                <input type="text" name="descuento"  id="descuento" disabled value="0">
+            </div>
+        </div>
+
+    </div>
+
+    <br/>
+    <div class="control-group">
+        <div class="controls">
+            <button type="submit" class="btn btn-success">Guardar</button>
+        </div>
+    </div>
+
+</fieldset>
+</form>
+
+<script>
+    var tb = 0;
+    var ensayo_id = [];
+    var ensayo_des = [];
+    var ensayo_valor = [];
+    var frm ="";
+
+    jQuery(document).ready(function(){
+        /*
+
+        <label for="date" class="control-label">Fecha</label>
+        <input class="span3" type="" id="date" name="date" placeholder="">
+        $("#date").datepicker().datepicker("setDate", new Date());
+         */
+
+        $('#tok').html(token);
+        get_laboratorio();
+        listado_empresa_id();
+
+        UIkit.notify({
+            message : 'Recuerde Listar los Ensayos Antes de Comenzar a Diligenciar el Formulario',
+            status  : 'info',
+            timeout : 8000,
+            pos:'top-center'
+        });
+
+        frm = $('#add_orden');
+
+    });
+
+    function eliminar_fila(id){
+        $('#tb'+id).remove();
+        sumar_total();
+    }
+
+    function add_fila(){
+
+        codigo = '<input type="" class="span12" name="codigo_tb'+tb+'" id="codigo_tb'+tb+'" placeholder="Codigo" required>';
+        des = '<input type="" class="span12" name="descripcion_tb'+tb+'" id="descripcion_tb'+tb+'" placeholder="Descripción" required onchange="completar_fila(this)">';
+        cantidad = '<input type="number" class="span12" name="cantidad_tb'+tb+'" id="cantidad_tb'+tb+'" value="1" placeholder="Cantidad" required onchange="aumentar_cantidad(this)" min="1">';
+        valor = '<input type="number" class="span12" name="valor_tb'+tb+'" id="valor_tb'+tb+'" placeholder="Valor" enabled="false" disabled value="0">';
+        sub = '<input type="number" class="span12" name="sub_tb'+tb+'" id="sub_tb'+tb+'" placeholder="Subtotal" disabled value="0">';
+
+        fila = '<tr id="tb'+tb+'"> <th>'+codigo+'</th> <th>'+des+'</th> <th>'+cantidad+'</th> <th>'+valor+'</th> <th>'+sub+'</th> <th><button class="btn btn-danger" onclick="eliminar_fila('+tb+')" type="button">Eliminar</button></th> </tr>';
+
+        $('#tbbody').append(fila);
+
+        $('#descripcion_tb'+tb).autocomplete({
+            source:ensayo_des
+        });
+        $('#codigo_tb'+tb).autocomplete({
+            source: ensayo_id
+        });
+
+        tb = tb+1;
+        //$('#tbbody').html(tabla+fila);
+    }
+
+    function lista_ensayos(){
+        laboratorio = $('#laboratorio').val();
+
+        $.ajax({
+            type: 'GET',
+            url: 'lista_ensayo_laboratorio',
+            data: {'laboratorio':laboratorio},
+            success: function (data)
+            {
+                if (data === 'mal')
+                {
+                    UIkit.notify({
+                            message : 'Upps! algo salio mal, revisa los datos XD',
+                            status  : 'danger',
+                            timeout : 5000,
+                            pos:'top-center'
+                        });
+                }
+                else
+                {
+                    for(var i=0; i<data.length; i++)
+                    {
+                        ensayo_des[i] = data[i].fields.descripcion;
+                        ensayo_id[i]=data[i].pk;
+                        ensayo_valor[i] = data[i].fields.valor;
+                    }
+
+                    $('#descripcion_tb0').autocomplete({
+                        source:ensayo_des
+                    });
+                    $('#codigo_tb0').autocomplete({
+                        source:ensayo_id
+                    });
+
+
+                    UIkit.notify({
+                        message : 'Agregados Los Ensayos',
+                        status  : 'success',
+                        timeout : 5000,
+                        pos:'top-center'
+                    });
+
+
+                    $('#laboratorio').attr('disabled', true);
+
+                    $('#listar_ensayo').attr('disabled', true);
+
+                    $('#button_fila').removeAttr('disabled');
+                }
+            },
+            error: function(data) {
+                alert(data);
+            }
+        });
+    }
+
+    $('#beneficiario').change(function() {
+        if($(this).is(":checked")) {
+
+            total = $('#total').val()*1;
+            $('#descuento').val(total/2);
+            $('#total').val(total/2);
+        }
+        else{
+            sumar_total();
+        }
+    });
+
+    function completar_fila(etiqueta){
+
+        des = $(etiqueta).val();
+        ide = $(etiqueta).attr('id');
+        cadena = ide.split('_');
+        var i=0;
+        for(; i < ensayo_des.length; i++ )
+        {
+            if (ensayo_des[i] === des)
+            {
+                break;
+            }
+        }
+
+        $('#codigo_'+cadena[1]).val(ensayo_id[i]);
+
+        $('#valor_'+cadena[1]).val(ensayo_valor[i]);
+
+        $('#sub_'+cadena[1]).val(ensayo_valor[i]);
+
+        sumar_total()
+
+    }
+
+    function aumentar_cantidad(etiqueta){
+
+        cantidad = $(etiqueta).val();
+        ide = $(etiqueta).attr('id');
+
+        cadena = ide.split('_');
+        valor = $('#valor_'+cadena[1]).val();
+
+        total = cantidad*valor;
+        $('#sub_'+cadena[1]).val(total);
+
+        sumar_total()
+        //sumar el valor de total con el ingresado a continuacion en sub
+    }
+
+    function sumar_total(){
+        total = 0;
+
+        for(var i=0; i < tb; i++)
+        {
+            etiqueta = $('#sub_tb'+i);
+            if (etiqueta.length > 0)
+            {
+                console.log(etiqueta);
+                sub = etiqueta.val()*1;
+                total += sub;
+            }
+            else
+                console.log('no esta la etiqueta');
+        }
+        if($('#beneficiario').is(":checked")){
+            $('#descuento').val(total/2);
+            $('#total').val(total/2);
+        }
+        else{
+            $('#total').val(total);
+            $('#descuento').val(0);
+        }
+
+    }
+
+</script>

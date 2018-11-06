@@ -1,0 +1,122 @@
+ <div class="span12">
+
+    <div class="row-fluid">
+
+      <div class="row-fluid">
+        <div class="span4">
+            <div class="row-fluid">
+                    <input type="text" class="input-medium search-query" name="num_orden" id="num_orden" placeholder="Número de orden">
+                    <button class="btn btn-danger" onclick="buscar_num_orden($('#num_orden').val())" type="button">Buscar</button>
+            </div>
+        </div>
+<!--
+        <div class="span4">
+            <div class="row-fluid">
+
+                <input type="text" class="input-medium search-query" name="consignacion" id="consignacion" placeholder="Consignación">
+                <button class="btn btn-danger" onclick="orden_consignacion($('#consignacion').val())" type="button">Buscar</button>
+
+            </div>
+        </div>
+-->
+        <div class="span4">
+            <div class="row-fluid">
+
+                <input type="text" class="input-medium search-query" name="empresa" id="empresa" placeholder="Empresa">
+                <button class="btn btn-danger" onclick="orden_empresa($('#empresa').val())" type="button">Buscar</button>
+
+            </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+<script>
+    var orden_editar = 0;
+
+    jQuery(document).ready(function() {
+        listado_empresa_id();
+      });
+
+    function imprimir_orden(orden) {
+        window.open("imprimir_orden?id="+orden);
+        //window.open(window.location.hostname+"imprimir_orden?id="+orden);
+    }
+
+    function buscar_num_orden(numero){
+
+        if(numero === ''){
+            UIkit.notify({
+                message : 'No contiene un número de orden',
+                status  : 'danger',
+                timeout : 3000,
+                pos:'top-center'
+            });
+            return;
+        }
+        $.ajax({
+            type: 'GET',
+            url: 'orden_con_num',
+            data: {'numero':numero},
+
+            success: function (data) {
+                if(data === 'not')
+                {
+                    UIkit.notify({
+                            message : 'Orden no encontrada, verifique el número de la orden',
+                            status  : 'danger',
+                            timeout : 3000,
+                            pos:'top-center'
+                        });
+                }
+                else
+                {
+                    $('#body_orden').html(data);
+                }
+            },
+
+            error: function(data) {
+                alert(data);
+            }
+        });
+    }
+
+    function orden_empresa(em){
+        if(em === ''){
+            UIkit.notify({
+                message : 'No contiene un número de identificación',
+                status  : 'danger',
+                timeout : 3000,
+                pos:'top-center'
+            });
+            return;
+        }
+        $.ajax({
+            type: 'GET',
+            url: 'orden_empresa',
+            data: {'empresa':em},
+            success: function (data) {
+                if(data === 'no persona'){
+                    UIkit.notify({
+                        message : 'empresa no encontrada, verifique el número de identificación',
+                        status  : 'danger',
+                        timeout : 3000,
+                        pos:'top-center'
+                    });
+                }
+                else
+                {
+                    $('#body_orden').html(data);
+
+                }
+            },
+
+            error: function(data) {
+                alert(data);
+            }
+        });
+    }
+
+</script>

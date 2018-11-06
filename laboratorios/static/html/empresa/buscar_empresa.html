@@ -1,0 +1,162 @@
+
+  <div class="span12">
+
+    <div class="row-fluid">
+
+
+        <div class="span6">
+            <div class="row-fluid">
+                    <input type="text" class="input-medium search-query" name="auto_codigo" id="auto_codigo" placeholder="Identificación">
+                    <button class="btn btn-danger" onclick="buscar_identificacion($('#auto_codigo').val())" type="button">Buscar</button>
+            </div>
+        </div>
+
+        <div class="span6">
+            <div class="row-fluid">
+
+                <input type="text" class="input-medium search-query" name="auto_nombre" id="auto_nombre" placeholder="Nombre">
+                <button class="btn btn-danger" onclick="buscar_nombre($('#auto_nombre').val())" type="button">Buscar</button>
+
+            </div>
+        </div>
+
+
+    </div>
+
+  </div>
+
+  <script>
+
+      jQuery(document).ready(function() {
+
+        $.ajax({
+            type: 'GET',
+            url: 'listado_empresas',
+            data: '',
+            success: function (data) {
+
+                var array_nombre = [];
+                var array_codigo = [];
+
+
+                for(var i=0; i<data.length; i++){
+
+                    array_codigo[i] = data[i].fields.username;
+                    array_nombre[i] = data[i].fields.first_name;
+                }
+                $('#auto_nombre').autocomplete({
+                    source: array_nombre
+                });
+
+                $('#auto_codigo').autocomplete({
+                    source: array_codigo
+                 });
+
+            },
+            error: function(data) {
+                alert(data);
+            }
+        });
+
+      });
+
+      //cuando se consulte el usuario se debe cargar en el div de id="lista_usuarios"
+
+    function buscar_nombre(nombre){
+
+        $.ajax({
+        type: 'GET',
+        url: 'get_empresa_nombre',
+        data: {'nombre':nombre},
+        success: function (data) {
+            if (data == 'not')
+            {
+                alert('Usario No Encontrado');
+            }
+            else if(data === 'logout')
+            {
+                alert('La Sesión a Caducado, Recuerda Que Caduca Cada 20 Minutos')
+                window.location='logout';
+            }
+            else if(data === 'mal')
+            {
+                UIkit.notify({
+                    message : 'Ups, algo salio mal con el formulario XD',
+                    status  : 'danger',
+                    timeout : 3000,
+                    pos:'top-center'
+                });
+            }
+            else
+            {
+                //aca si se pinta el usuario que llego, en el div="body_user"
+
+                datos = data.split(',');
+                /*
+                3,mistol,1414,3202738594,edwin@gmail.com,avenida 4 #9-12
+                datos[0] --> id
+                datos[1] --> nombre
+                datos[2] --> identificacion
+                datos[3] --> telefono
+                datos[4] --> email
+                datos[5] --> direccion
+                */
+                fila = '<tr>    <td>'+datos[1] +'</td> <td>'+datos[2]+'</td><td>'+datos[3]+'</td><td>'+datos[4]+'</td> <td>'+ datos[5]+'</td> <td> <button class="btn btn-danger" onclick="editar_empresa(' +datos[0]+ ')" type="button">Editar</button>    </td> </tr>';
+
+                $('#body_empresa').html(fila)
+            }
+        },
+            error: function(data) {
+                alert('Error');
+                console.log(data)
+            }
+        });
+}
+
+    function buscar_identificacion(codigo){
+
+        $.ajax({
+        type: 'GET',
+        url: 'get_empresa_identificacion',
+        data: {'codigo':codigo},
+        success: function (data) {
+            if (data == 'not')
+            {
+                alert('Usario No Encontrado');
+            }
+            else if(data === 'logout')
+            {
+                alert('La Sesión a Caducado, Recuerda Que Caduca Cada 20 Minutos')
+                window.location='logout';
+            }
+            else if(data === 'mal')
+            {
+                alert('Ups, algo salio mal con el formulario');
+            }
+            else
+            {
+                //aca si se pinta el usuario que llego, en el div="body_user"
+                console.log(data);
+                datos = data.split(',');
+                /*
+                3,mistol,1414,3202738594,edwin@gmail.com,avenida 4 #9-12
+                datos[0] --> id
+                datos[1] --> nombre
+                datos[2] --> identificacion
+                datos[3] --> telefono
+                datos[4] --> email
+                datos[5] --> direccion
+                */
+                fila = '<tr>    <td>'+datos[1] +'</td> <td>'+datos[2]+'</td><td>'+datos[3]+'</td><td>'+datos[4]+'</td> <td>'+ datos[5]+'</td> <td> <button class="btn btn-danger" onclick="editar_empresa(' +datos[0]+ ')" type="button">Editar</button>    </td> </tr>';
+
+                $('#body_empresa').html(fila)
+            }
+        },
+            error: function(data) {
+                alert('Error');
+                console.log(data)
+            }
+        });
+      }
+
+  </script>

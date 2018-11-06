@@ -1,0 +1,75 @@
+<form method="post" action="add_maquina" id="add_maquina" class="form-horizontal">
+<div id="tok"></div>
+<fieldset>
+    <div class="control-group text-center">
+        <legend>Registro de Maquina</legend>
+    </div>
+
+    <div class="control-group">
+        <label for="nombre" class="control-label">Nombre</label>
+        <div class="controls">
+            <input type="text" name="nombre"  placeholder="Nombre de la maquina" id="nombre" required>
+        </div>
+    </div>
+
+    <div class="control-group">
+        <label for="nombre" class="control-label">Fecha de Calibración</label>
+        <div class="controls">
+            <input type="" name="fecha"  placeholder="Fecha de Calibración" id="fecha" required>
+        </div>
+    </div>
+
+
+    <div class="control-group">
+        <div class="controls">
+            <button type="submit" class="btn btn-success">Guardar</button>
+        </div>
+    </div>
+
+</fieldset>
+</form>
+
+<script>
+    var frm;
+    jQuery(document).ready(function(){
+        $('#tok').html(token);
+        $("#fecha").datepicker();
+        frm = $('#add_maquina');
+    });
+
+    frm.submit(function () {
+        $.ajax({
+            type: frm.attr('method'),
+            url: frm.attr('action'),
+            data: frm.serialize(),
+            success: function (data) {
+                if (data === 'ok')
+                    {
+                        UIkit.notify({
+                            message : 'Maquina Guardada Con Exito',
+                            status  : 'success',
+                            timeout : 5000,
+                            pos:'top-center'
+                        });
+                        get_maquinas();
+
+                    }
+                else
+                    {
+                        UIkit.notify({
+                            message : 'Ups, algo salio mal con el formulario XD',
+                            status  : 'danger',
+                            timeout : 3000,
+                            pos:'top-center'
+                        });
+                    }
+            },
+            error: function(data) {
+                alert(data);
+                console.log(data)
+            }
+        });
+        return false;
+    });
+
+</script>

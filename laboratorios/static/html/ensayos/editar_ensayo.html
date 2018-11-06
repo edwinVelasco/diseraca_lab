@@ -1,0 +1,161 @@
+<form method="post" action="editar_ensayo" id="editar_ensayo" class="form-horizontal">
+<div id="tok"></div>
+<fieldset class="controls">
+    <div class="control-group text-center">
+        <legend>Editar de Ensayos</legend>
+    </div>
+
+    <div class="control-group">
+        <label for="descripcion" class="control-label">Descripción</label>
+        <div class="controls">
+            <input class="span6" type="text" name="descripcion"  placeholder="Descripción del ensayo" id="descripcion" required max_length="125">
+        </div>
+    </div>
+
+    <div class="control-group">
+        <label for="descripcion" class="control-label">Código</label>
+        <div class="controls">
+            <input class="span6" type="text" name="codigo"  placeholder="Código del ensayo" id="codigo" required max_length=4>
+        </div>
+    </div>
+
+    <div class="control-group">
+        <label for="valor" class="control-label">Valor</label>
+        <div class="controls">
+            <input type="number" name="valor"  placeholder="Valor del Ensayo" id="valor" required>
+        </div>
+    </div>
+
+    <div class="control-group">
+        <label for="unidad" class="control-label">Unidad</label>
+        <div class="controls">
+            <input class="span6" type="text" name="unidad"  placeholder="unidad del ensayo" id="unidad" required max_length=15>
+        </div>
+    </div>
+
+    <div class="control-group">
+        <label for="metodo" class="control-label">Metodo</label>
+        <div class="controls">
+            <input class="span6" type="text" name="metodo"  placeholder="Metodo del ensayo" id="metodo" required max_length=250 title="matodo1-metodo2-metodo3..">
+        </div>
+    </div>
+
+    <div class="control-group">
+        <div class="controls">
+            <label class="checkbox">
+                <input type="checkbox" name="acreditado" id="acreditado">Acreditado
+            </label>
+        </div>
+    </div>
+
+    <div class="control-group">
+        <div class="controls">
+            <button type="submit" class="btn btn-success">Editar Ensayo</button>
+        </div>
+    </div>
+
+</fieldset>
+</form>
+
+<script>
+    var frm;
+
+    jQuery(document).ready(function() {
+
+        frm = $('#editar_ensayo');
+        //get_laboratorio();
+        get_ensayo();
+      });
+
+    function get_ensayo(){
+        console.log(usuario_editar);
+        $.ajax({
+            type: 'GET',
+            url: 'get_ensayo',
+            data: {'codigo':usuario_editar},
+            success: function (data) {
+
+                if (data == 'not')
+                {
+                    alert('Usario No Encontrado');
+                }
+                else if(data === 'logout')
+                {
+                    alert('La Sesión a Caducado, Recuerda Que Caduca Cada 20 Minutos')
+                    window.location='logout';
+                }
+                else
+                {
+                    console.log(data);
+                    datos = data.split(',');
+                    /*
+                    datos[0] --> id
+                    datos[1] --> codigo
+                    datos[2] --> descripcion
+                    datos[3] --> valor
+                    datos[4] --> unidad
+                    datos[5] --> metodo
+                    datos[6] --> acreditado
+                    */
+
+                    $("#descripcion").val(datos[2]);
+                    $("#valor").val(datos[3]);
+                    $("#codigo").val(datos[1]);
+                    $("#unidad").val(datos[4]);
+                    $("#metodo").val(datos[5]);
+                    var s = '<input name="id" value="' +datos[0]+'" type="hidden">';
+
+                    if (datos[6] ==='True')
+                        $('#acreditado').attr('checked', true);
+                    $('#tok').html(token+s);
+                }
+
+            },
+            error: function(data) {
+                alert(data);
+            }
+        });
+    }
+
+    frm.submit(function () {
+        $.ajax({
+            type: frm.attr('method'),
+            url: frm.attr('action'),
+            data: frm.serialize(),
+            success: function (data) {
+                if (data === 'ok')
+                    {
+                        UIkit.notify({
+                            message : 'Guardado Con Exito',
+                            status  : 'success',
+                            timeout : 5000,
+                            pos:'top-center'
+                        });
+                        listado_ensayo();
+                    }
+                else if(data === 'logout')
+                    {
+                        alert('La Sesión a Caducado, Recuerda Que Caduca Cada 20 Minutos')
+                        window.location='logout';
+                    }
+                else
+                    {
+                        UIkit.notify({
+                            message : 'Upps! algo salio mal, revisa los datos XD',
+                            status  : 'danger',
+                            timeout : 5000,
+                            pos:'top-center'
+                        });
+                    }
+            },
+            error: function(data) {
+                alert(data);
+                console.log(data)
+            }
+        });
+        return false;
+    });
+
+
+
+</script>

@@ -1,0 +1,152 @@
+{% extends "laboratorios/base.html" %}
+{% load staticfiles %}
+{% block title %} Lab Aguas | Silabsa {% endblock %}
+{% block user %} {{ usuario }} {% endblock %}
+
+
+{% block menu %}
+<ul class="sidebar-menu">
+    <li class="has-sub">
+        <a href="javascript:;" class="">
+            <span class="icon-box"> <i class="icon-list"></i></span> Ordenes
+            <span class="arrow"></span>
+        </a>
+        <ul class="sub">
+            <li><a class="" href="sesion">Pendientes</a></li>
+            <!--<li onclick="ordenes_terminadas_aguas()"><a class="" href="javascript:;">Terminadas</a></li>-->
+        </ul>
+    </li>
+
+    <li class="has-sub">
+        <a href="javascript:;" class="">
+            <span class="icon-box"> <i class="icon-edit"></i></span> Cotizaciones
+            <span class="arrow"></span>
+        </a>
+        <ul class="sub">
+            <li onclick="cotizacion()"><a class="" href="javascript:;">Generar</a></li>
+        </ul>
+    </li>
+</ul>
+{% endblock %}
+
+{% block body %}
+<div class="row-fluid">
+   <div class="span12">
+      <h3 class="page-title" id="titulo_vista">
+          Laboratorio de aguas
+      </h3>
+   </div>
+</div>
+
+<div class="row-fluid">
+   <div class="span12">
+      <div class="widget box blue" id="form_wizard_1">
+            <div class="widget-title">
+                <span class="tools">
+                    <a href="javascript:;" class="icon-chevron-down"></a>
+                </span>
+            </div>
+
+            <div class="widget-body form" id="formularios">
+                {% if pendientes and pendientes|length > 0 %}
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Orden</th>
+                                <th>Fecha Orden</th>
+                                <th>Empresa</th>
+                                <th>Total</th>
+                                <th>Ver Resultado</th>
+                                <th>Nuevo Resultado</th>
+                                <th>Terminar Orden</th>
+                                <th>Orden</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for orden in pendientes %}
+                                <tr>
+                                    <th>{{ orden.id }}</th>
+                                    <th>{{ orden.fecha_orden }}</th>
+                                    <th>{{ orden.persona.user.first_name }}</th>
+                                    <th>{{ orden.total }}</th>
+                                    <th><button class="btn btn-danger" onclick="ver_ensayos_agua({{ orden.id }})" type="button">Ver</button></th>
+                                    <th><button class="btn btn-danger" onclick="nuevo_resultado_agua({{ orden.id }})" type="button">Nuevo</button></th>
+                                    <th><button class="btn btn-danger" onclick="terminar_orden({{ orden.id }})" type="button">Terminar</button></th>
+                                    <th><a class="btn btn-danger" href="imprimir_orden?id={{ orden.id }}" type="button" target="_blank">Imprimir</a></th>
+                                </tr>
+                            {% endfor %}
+
+                        </tbody>
+
+                    </table>
+                {% else %}
+                    <h3>No hay Ordenes Pendientes para el laboratorio</h3>
+                {% endif %}
+
+                <div id="lista_reportes">
+
+                </div>
+            </div>
+      </div>
+   </div>
+</div>
+
+{% endblock %}
+
+
+
+
+{% block script %}
+   <!-- BEGIN JAVASCRIPTS -->
+   <!-- Load javascripts at bottom, this will reduce page load time -->
+   <script src="{% static 'js/jquery-1.8.3.min.js' %}"></script>
+   <script src="{% static 'assets/bootstrap/js/bootstrap.min.js' %}"></script>
+   <script src="{% static 'assets/bootstrap-wizard/jquery.bootstrap.wizard.min.js' %}"></script>
+   <script src="{% static 'js/jquery.blockui.js' %}"></script>
+   <script src="{% static 'js-diseraca/password.js' %}"></script>
+   <!-- ie8 fixes -->
+   <!--[if lt IE 9]>
+   <script src="{% static 'js/excanvas.js' %}"></script>
+   <script src="{% static 'js/respond.js' %}"></script>
+   <![endif]-->
+    <script src="{% static 'assets/chosen-bootstrap/chosen/chosen.jquery.min.js' %}"></script>
+   <!-- <script src="{% static 'assets/uniform/jquery.uniform.min.js' %}"></script> -->
+
+    <script src="{% static 'jquery-ui/jquery-ui.min.js' %}"></script>
+   <script src="{% static 'js/scripts.js' %}"></script>
+   <script src="{% static 'uikit/js/uikit.min.js' %}"></script>
+   <script src="{% static 'uikit/js/components/notify.min.js' %}"></script>
+   <script src="{% static 'js-diseraca/ordenes_aguas.js' %}"></script>
+
+   <script>
+        var token = "";
+        var orden_editar="";
+        jQuery(document).ready(function() {
+         // initiate layout and plugins
+         App.init();
+          var ventana = $(window).height();
+         $("#main-content").css("min-height",ventana-110);
+          token = "{% csrf_token %}";
+
+          //setInterval('fecha_hora()',5000);
+          //ordenes_pendientes_aguas();
+        });
+
+       function fecha_hora()
+        {
+           $.ajax({
+            type: 'GET',
+            url: 'fecha_hora',
+            data: '',
+            success: function (data) {
+                time = '<span>'+data+'</span>';
+
+                $('#tiempo').html(time);
+            },
+            error: function(data) {
+                alert(data);
+            }
+        });
+       }
+   </script>
+{% endblock %}

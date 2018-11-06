@@ -1,0 +1,124 @@
+<form method="post" action="add_ensayo" id="add_ensayo" class="form-horizontal">
+<div id="tok"></div>
+<fieldset class="controls">
+    <div class="control-group text-center">
+        <legend>Registro de Ensayos</legend>
+    </div>
+
+    <div class="control-group">
+        <label for="descripcion" class="control-label">Descripción</label>
+        <div class="controls">
+            <input class="span6" type="text" name="descripcion"  placeholder="Descripción del ensayo" id="descripcion" required max_length="125">
+        </div>
+    </div>
+
+    <div class="control-group">
+        <label for="descripcion" class="control-label">Código</label>
+        <div class="controls">
+            <input class="span6" type="text" name="codigo"  placeholder="Código del ensayo" id="codigo" required max_length=4>
+        </div>
+    </div>
+
+    <div class="control-group">
+        <label for="valor" class="control-label">Valor</label>
+        <div class="controls">
+            <input type="number" name="valor"  placeholder="Valor del Ensayo" id="valor" required>
+        </div>
+    </div>
+
+    <div class="control-group">
+        <label for="unidad" class="control-label">Unidad</label>
+        <div class="controls">
+            <input class="span6" type="text" name="unidad"  placeholder="unidad del ensayo" id="unidad" required max_length=15>
+        </div>
+    </div>
+
+    <div class="control-group">
+        <label for="metodo" class="control-label">Metodo</label>
+        <div class="controls">
+            <input class="span6" type="text" name="metodo"  placeholder="Metodo del ensayo" id="metodo" required max_length=250 title="matodo1-metodo2-metodo3..">
+        </div>
+    </div>
+
+    <div class="control-group">
+        <div class="controls">
+            <label class="checkbox">
+                <input type="checkbox" name="" id="acreditado">Acreditado
+            </label>
+        </div>
+    </div>
+
+    <div class="control-group">
+        <div class="controls">
+            <button type="submit" class="btn btn-success">Guardar Ensayo</button>
+        </div>
+    </div>
+
+</fieldset>
+</form>
+
+<script>
+    var frm;
+
+    jQuery(document).ready(function() {
+        //console.log(token+' registro');
+        $('#tok').html(token);
+        frm = $('#add_ensayo');
+        get_laboratorio();
+      });
+
+    frm.submit(function () {
+        $.ajax({
+            type: frm.attr('method'),
+            url: frm.attr('action'),
+            data: frm.serialize(),
+            success: function (data) {
+                if (data === 'ok')
+                    {
+                        UIkit.notify({
+                            message : 'Registro del Ensayo Satisfactorio',
+                            status  : 'success',
+                            timeout : 3000,
+                            pos:'top-center'
+                        });
+
+                        $("#descripcion").val('');
+                        $("#valor").val('');
+                        $("#codigo").val('');
+                        $("#unidad").val('');
+                        $("#metodo").val('');
+                        //$("#formulario").val('0');
+                        //$("#laboratorio").val('0');
+                    }
+                else if(data === 'ya')
+                    {
+                        UIkit.notify({
+                            message : 'el codigo del ensayo ya registrado',
+                            status  : 'warning',
+                            timeout : 5000,
+                            pos:'top-center'
+                        });
+                    }
+                else if(data === 'logout')
+                    {
+                        alert('La Sesión a Caducado, Recuerda Que Caduca Cada 20 Minutos')
+                        window.location='/admin/logout';
+                    }
+                else
+                    { //retorna una cadena de error porque no selecciono que formulario, o laboratorio
+                        UIkit.notify({
+                            message : 'Upps! algo salio mal, revisa los datos de formulario XD',
+                            status  : 'warning',
+                            timeout : 5000,
+                            pos:'top-center'
+                        });
+                    }
+            },
+            error: function(data) {
+                alert(data);
+                console.log(data)
+            }
+        });
+        return false;
+    });
+</script>
